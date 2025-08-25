@@ -1,9 +1,10 @@
 import { IoMdClose } from 'react-icons/io';
+import CartContent from '../Cart/CartContent';
 
 const CartDrawer = ({ drawerOpen, toggleCartDrawer }) => {
 	return (
 		<div
-			className={`fixed top-0 right-0 w-3/4 sm:w-1/2 md:w-1/4 h-full bg-white shadow-lg transform transition-transform duration-300 flex flex-col z-50 ${
+			className={`fixed top-0 right-0 w-3/4 sm:w-1/2 md:w-[30rem] h-full bg-white shadow-lg transform transition-transform duration-300 flex flex-col z-50 ${
 				drawerOpen ? 'translate-x-0' : 'translate-x-full'
 			}`}>
 			{/* Close button */}
@@ -15,7 +16,9 @@ const CartDrawer = ({ drawerOpen, toggleCartDrawer }) => {
 			{/* Cart Contents */}
 			<div className='flex-grow p-4 overflow-y-auto'>
 				<h2 className='text-xl font-semibold mb-4'>Your Cart</h2>
+				<CartContent />
 			</div>
+			{/* Checkout button */}
 			<div className='p-4 bg-white sticky bottom-0'>
 				<button className='w-full bg-black text-white rounded-lg py-3 font-semibold hover:bg-gray-800 transition'>
 					Checkout
@@ -24,7 +27,6 @@ const CartDrawer = ({ drawerOpen, toggleCartDrawer }) => {
 					Shipping, taxes and discount codes calculated at checkout.
 				</p>
 			</div>
-			{/* Checkout button */}
 		</div>
 	);
 };
