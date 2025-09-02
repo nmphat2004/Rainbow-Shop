@@ -36,8 +36,8 @@ const FeaturesSection = () => {
 						<HiOutlineCreditCard className='text-xl' />
 					</div>
 					<h4 className='tracking-tighter mb-2'>SECURE CHECKOUT</h4>
+					100% secured checkout process
 					<p className='text-gray-600 text-sm tracking-tighter'>
-						100% secured checkout process
 					</p>
 				</div>
 			</div>
