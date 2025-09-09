@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const MyOrdersPage = () => {
+	const navigate = useNavigate();
 	const [orders, setOrders] = useState([]);
 
 	useEffect(() => {
@@ -58,8 +60,9 @@ const MyOrdersPage = () => {
 						{orders.length > 0 ? (
 							orders.map((order) => (
 								<tr
+									onClick={() => navigate(`/order/${order._id}`)}
 									key={order._id}
-									className='border-b hover:border-gray-50 cursor-pointer'>
+									className='border-b border-gray-50 hover:border-gray-200 cursor-pointer'>
 									<td className='py-2 px-2 sm:py-4 sm:px-4'>
 										<img
 											src={order.orderItems[0].image}
