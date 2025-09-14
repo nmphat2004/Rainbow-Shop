@@ -2,6 +2,9 @@ const express = require('express')
 const cors = require('cors')
 const dotenv = require('dotenv')
 const connectDB = require('./config/db')
+const {
+  routes
+} = require('./routes')
 
 const app = express()
 app.use(express.json())
@@ -16,6 +19,9 @@ connectDB()
 app.get('/', (req, res) => {
   res.send('Hello world')
 })
+
+// API Routes
+routes(app)
 
 app.listen(PORT, () => {
   console.log(`App is running on port: ${PORT}`);
