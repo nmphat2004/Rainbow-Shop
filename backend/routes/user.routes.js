@@ -31,13 +31,31 @@ router.post('/register', async (req, res) => {
     })
     await user.save()
 
-    res.status(201).json({
+    // Create JWT Payload
+    const payload = {
       user: {
-        _id: user._id,
-        name: user.name,
-        password: user.password,
+        id: user._id,
         role: user.role
       }
+    }
+
+    // Sign and return the token along with user data
+    jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: '40h'
+    }, (err, token) => {
+      if (err) throw err
+
+      // Send the user and token in response
+      res.status(201).json({
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          password: user.password,
+          role: user.role
+        },
+        token
+      })
     })
   } catch (error) {
     console.log(error);
