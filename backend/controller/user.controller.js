@@ -110,7 +110,12 @@ const login = async (req, res) => {
   }
 }
 
+const profile = async (req, res) => {
+  res.json(req.user)
+}
+
 module.exports = {
   register,
-  login
+  login,
+  profile
 }
