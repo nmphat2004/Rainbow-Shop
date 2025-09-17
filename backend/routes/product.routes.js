@@ -16,4 +16,9 @@ router.post('/', protect, admin, productController.createProduct)
 // @desc Update an existing product ID
 // @access Private/Admin
 router.put('/:id', protect, admin, productController.updateProduct)
+
+// @route DELETE /api/products/:id
+// @desc Delete a product by id
+// @access Private/Admin
+router.delete('/:id', protect, admin, productController.deleteProduct)
 module.exports = router
