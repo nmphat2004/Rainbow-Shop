@@ -21,4 +21,10 @@ router.put('/:id', protect, admin, productController.updateProduct)
 // @desc Delete a product by id
 // @access Private/Admin
 router.delete('/:id', protect, admin, productController.deleteProduct)
+
+// @route GET /api/products
+// @desc Get all products with optional query filters
+// @access Public
+router.get('/', productController.getProduct)
+
 module.exports = router
