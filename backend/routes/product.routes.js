@@ -25,6 +25,11 @@ router.delete('/:id', protect, admin, productController.deleteProduct)
 // @route GET /api/products
 // @desc Get all products with optional query filters
 // @access Public
-router.get('/', productController.getProduct)
+router.get('/', productController.getAllProducts)
+
+// @route GET /api/products/:id
+// @desc Get a single product by ID
+// @access Public
+router.get('/:id', productController.getProduct)
 
 module.exports = router

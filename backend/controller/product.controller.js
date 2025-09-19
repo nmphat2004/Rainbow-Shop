@@ -137,7 +137,7 @@ const deleteProduct = async (req, res) => {
   }
 }
 
-const getProduct = async (req, res) => {
+const getAllProducts = async (req, res) => {
   try {
     const {
       collection,
@@ -229,9 +229,27 @@ const getProduct = async (req, res) => {
   }
 }
 
+const getProduct = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id)
+
+    if (product) {
+      res.json(product)
+    } else {
+      res.status(404).json({
+        message: 'Product not found'
+      })
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server Error')
+  }
+}
+
 module.exports = {
   createProduct,
   updateProduct,
   deleteProduct,
+  getAllProducts,
   getProduct
 }
