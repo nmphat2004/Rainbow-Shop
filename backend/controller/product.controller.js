@@ -246,10 +246,41 @@ const getProduct = async (req, res) => {
   }
 }
 
+const getSimilarProducts = async (req, res) => {
+  const {
+    id
+  } = req.params
+
+  try {
+    const product = await Product.findById(id)
+
+    if (!product) {
+      return res.status(404).json({
+        message: 'Product not found'
+      })
+    }
+
+    const similarProducts = await Product.find({
+      _id: {
+        $ne: id
+      }, // Exclude the current product ID
+      gender: product.gender,
+      category: product.category
+    }).limit(4)
+
+    res.json(similarProducts)
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server Error')
+  }
+
+}
+
 module.exports = {
   createProduct,
   updateProduct,
   deleteProduct,
   getAllProducts,
-  getProduct
+  getProduct,
+  getSimilarProducts
 }

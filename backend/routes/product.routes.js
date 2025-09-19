@@ -32,4 +32,9 @@ router.get('/', productController.getAllProducts)
 // @access Public
 router.get('/:id', productController.getProduct)
 
+// @route GET /api/products/similar/:id
+// @desc Retrieve similar products based on the current product's gender and category
+// @access Public
+router.get('/similar/:id', productController.getSimilarProducts)
+
 module.exports = router
