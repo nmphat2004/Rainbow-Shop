@@ -295,6 +295,19 @@ const getBestSellerProduct = async (req, res) => {
   }
 }
 
+const getNewArrivalsProducts = async (req, res) => {
+  try {
+    const newArrivals = await Product.find().sort({
+      createdAt: -1
+    }).limit(8)
+
+    res.json(newArrivals)
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server Error')
+  }
+}
+
 module.exports = {
   createProduct,
   updateProduct,
@@ -302,5 +315,6 @@ module.exports = {
   getAllProducts,
   getProduct,
   getSimilarProducts,
-  getBestSellerProduct
+  getBestSellerProduct,
+  getNewArrivalsProducts
 }

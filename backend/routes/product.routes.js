@@ -32,6 +32,11 @@ router.get('/', productController.getAllProducts)
 // @access Public
 router.get('/best-seller', productController.getBestSellerProduct)
 
+// @route GET /api/products/new-arrivals
+// @desc Retrieve latest 8 products - Creation date
+// @access Public
+router.get('/new-arrivals', productController.getNewArrivalsProducts)
+
 // @route GET /api/products/:id
 // @desc Get a single product by ID
 // @access Public
