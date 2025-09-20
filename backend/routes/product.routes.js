@@ -27,6 +27,11 @@ router.delete('/:id', protect, admin, productController.deleteProduct)
 // @access Public
 router.get('/', productController.getAllProducts)
 
+// @route GET /api/products/best-seller
+// @desc Retrieve the product with highest rating
+// @access Public
+router.get('/best-seller', productController.getBestSellerProduct)
+
 // @route GET /api/products/:id
 // @desc Get a single product by ID
 // @access Public

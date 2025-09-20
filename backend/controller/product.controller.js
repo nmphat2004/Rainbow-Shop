@@ -276,11 +276,31 @@ const getSimilarProducts = async (req, res) => {
 
 }
 
+const getBestSellerProduct = async (req, res) => {
+  try {
+    const bestSeller = await Product.findOne().sort({
+      rating: -1
+    })
+
+    if (bestSeller) {
+      res.json(bestSeller)
+    } else {
+      res.status(404).json({
+        message: 'Not best seller found'
+      })
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server Error')
+  }
+}
+
 module.exports = {
   createProduct,
   updateProduct,
   deleteProduct,
   getAllProducts,
   getProduct,
-  getSimilarProducts
+  getSimilarProducts,
+  getBestSellerProduct
 }
