@@ -16,4 +16,9 @@ router.post('/', cartController.createCart)
 // @access Public
 router.put('/', cartController.updateQuantityProduct)
 
+// @route DELETE /api/cart
+// @desc Remove a product from the cart
+// @access Public
+router.delete('/', cartController.deleteProductFromCart)
+
 module.exports = router
