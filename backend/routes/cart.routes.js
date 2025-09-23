@@ -11,4 +11,9 @@ const router = express.Router()
 // @access Public
 router.post('/', cartController.createCart)
 
+// @route PUT /api/route
+// @desc Update product quantity in the cart for a guest or logged-in user
+// @access Public
+router.put('/', cartController.updateQuantityProduct)
+
 module.exports = router
