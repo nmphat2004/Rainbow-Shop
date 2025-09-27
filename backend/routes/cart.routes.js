@@ -26,5 +26,9 @@ router.delete('/', cartController.deleteProductFromCart)
 // @access Public
 router.get('/', cartController.getCartDetail)
 
+// @route POST /api/cart/merge
+// @desc Merge guest cart into user cart on login
+// @access Private
+router.post('/merge', protect, cartController.mergeCart)
 
 module.exports = router
