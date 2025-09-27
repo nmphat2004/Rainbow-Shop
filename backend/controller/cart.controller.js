@@ -164,8 +164,33 @@ const deleteProductFromCart = async (req, res) => {
   }
 }
 
+const getCartDetail = async (req, res) => {
+  const {
+    guestId,
+    userId
+  } = req.query
+
+  try {
+    const cart = await getCart(userId, guestId)
+
+    if (cart) {
+      res.status(200).json(cart)
+    } else {
+      res.status(404).json({
+        message: 'Cart not found'
+      })
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: 'Server Error'
+    })
+  }
+}
+
 module.exports = {
   createCart,
   updateQuantityProduct,
-  deleteProductFromCart
+  deleteProductFromCart,
+  getCartDetail
 }

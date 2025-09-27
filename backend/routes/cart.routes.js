@@ -21,4 +21,10 @@ router.put('/', cartController.updateQuantityProduct)
 // @access Public
 router.delete('/', cartController.deleteProductFromCart)
 
+// @route GET /api/cart
+// @desc Get logged-in user's or guest user's cart
+// @access Public
+router.get('/', cartController.getCartDetail)
+
+
 module.exports = router
