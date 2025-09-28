@@ -64,7 +64,7 @@ const checkoutSchema = new mongoose.Schema({
   },
   paymentStatus: {
     type: String,
-    default: 'pending'
+    default: 'Pending'
   },
   paymentDetails: {
     type: mongoose.Schema.Types.Mixed // store payment-related details(transaction ID, paypal response)
