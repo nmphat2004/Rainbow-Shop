@@ -11,4 +11,9 @@ const router = express.Router()
 // @access Private
 router.post('/', protect, checkoutController.createCheckout)
 
+// @route PUT /api/checkout/:id/pay
+// @desc Update checkout to mark as paid after successful payment
+// @access Private
+router.put('/:id/pay', protect, checkoutController.updateCheckout)
+
 module.exports = router
