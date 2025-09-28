@@ -16,4 +16,9 @@ router.post('/', protect, checkoutController.createCheckout)
 // @access Private
 router.put('/:id/pay', protect, checkoutController.updateCheckout)
 
+// @route POST /api/checkout/:id/finalize
+// @desc Finalize checkout and convert to an order after payment confirmation
+// @access Private
+router.post('/:id/finalize', protect, checkoutController.finalizeCheckout)
+
 module.exports = router
