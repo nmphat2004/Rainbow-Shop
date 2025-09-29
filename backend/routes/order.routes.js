@@ -6,7 +6,7 @@ const {
 
 const router = express.Router()
 
-// @route GET /api/order/my-order
+// @route GET /api/orders/my-order
 // @desc Get logged-in user's orders
 // @access Private
 router.get('/my-orders', protect, orderController.getMyOrders)
