@@ -9,5 +9,5 @@ module.exports.routes = (app) => {
   app.use('/api/products', productRoutes)
   app.use('/api/cart', cartRoutes)
   app.use('/api/checkout', checkoutRoutes)
-  app.use('/api/order', orderRoutes)
+  app.use('/api/orders', orderRoutes)
 }
