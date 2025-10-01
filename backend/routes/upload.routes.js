@@ -1,7 +1,7 @@
 const express = require('express')
 const multer = require('multer')
 const cloudinary = require('cloudinary').v2
-const streamifier = require('streamifier')
+const uploadController = require('../controller/upload.controller')
 
 require('dotenv').config()
 
@@ -12,12 +12,14 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 })
 
+const router = express.Router()
+
 // Multer setup using memory storage
 const storage = multer.memoryStorage()
 const upload = multer({
   storage
 })
 
-const router = express.Router()
+router.post('/', upload.single('image'), uploadController.uploadImage)
 
 module.exports = router
