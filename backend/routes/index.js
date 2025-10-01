@@ -13,5 +13,5 @@ module.exports.routes = (app) => {
   app.use('/api/checkout', checkoutRoutes)
   app.use('/api/orders', orderRoutes)
   app.use('/api/upload', uploadRoutes)
-  app.use('/api/subscriber', subscriberRoutes)
+  app.use('/api/subscribe', subscriberRoutes)
 }
