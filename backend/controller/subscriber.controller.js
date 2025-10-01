@@ -1,0 +1,1 @@
+const Subscriber = require('../models/Subscriber')
