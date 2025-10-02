@@ -22,4 +22,9 @@ router.post('/users', protect, admin, adminController.addUser)
 // @access Private/Admin
 router.put('/users/:id', protect, admin, adminController.updateUser)
 
+// @route DELETE /api/admin/users/:id
+// @desc Delete a user (admin)
+// @access Private/Admin
+router.delete('/users/:id', protect, admin, adminController.deleteUser)
+
 module.exports = router
