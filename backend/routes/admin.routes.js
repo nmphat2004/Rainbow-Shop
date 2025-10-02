@@ -12,4 +12,9 @@ const router = express.Router()
 // @access Private
 router.get('/users', protect, admin, adminController.getAllUsers)
 
+// @route POST /api/admin/users
+// @desc Add a new user (admin)
+// @access Private
+router.post('/users', protect, admin, adminController.addUser)
+
 module.exports = router
