@@ -37,7 +37,36 @@ const addUser = async (req, res) => {
 
     await user.save()
     res.status(201).json({
-      message: 'User created successfully'
+      message: 'User created successfully',
+      user
+    })
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: 'Server Error'
+    })
+  }
+}
+
+const updateUser = async (req, res) => {
+  const {
+    name,
+    email,
+    role
+  } = req.body
+
+  try {
+    const user = await User.findById(req.params.id)
+    if (user) {
+      user.name = name || user.name
+      user.email = email || user.email
+      user.role = role || user.role
+    }
+
+    await user.save()
+    res.json({
+      message: 'User updated successfully',
+      user
     })
   } catch (error) {
     console.error(error);
@@ -49,5 +78,6 @@ const addUser = async (req, res) => {
 
 module.exports = {
   getAllUsers,
-  addUser
+  addUser,
+  updateUser
 }

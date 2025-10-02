@@ -14,7 +14,12 @@ router.get('/users', protect, admin, adminController.getAllUsers)
 
 // @route POST /api/admin/users
 // @desc Add a new user (admin)
-// @access Private
+// @access Private/Admin
 router.post('/users', protect, admin, adminController.addUser)
+
+// @route PUT /api/admin/users/:id
+// @desc Update user information (admin)
+// @access Private/Admin
+router.put('/users/:id', protect, admin, adminController.updateUser)
 
 module.exports = router
