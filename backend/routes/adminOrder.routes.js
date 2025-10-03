@@ -17,4 +17,9 @@ router.get('/', protect, admin, adminOrderController.getAllOrders)
 // @access Private/Admin
 router.put('/:id', protect, admin, adminOrderController.updateOrderStatus)
 
+// @route DELETE /api/admin/orders/:id
+// @desc Delete an order
+// @access Private/Admin
+router.delete('/:id', protect, admin, adminOrderController.deleteOrder)
+
 module.exports = router
