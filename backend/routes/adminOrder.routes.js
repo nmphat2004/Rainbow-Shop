@@ -12,4 +12,9 @@ const router = express.Router()
 // @access Private/Admin
 router.get('/', protect, admin, adminOrderController.getAllOrders)
 
+// @route PUT /api/admin/orders/:id
+// @desc Update order status
+// @access Private/Admin
+router.put('/:id', protect, admin, adminOrderController.updateOrderStatus)
+
 module.exports = router
