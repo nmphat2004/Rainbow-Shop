@@ -90,7 +90,7 @@ const adminSlice = createSlice({
 				state.loading = false;
 				state.error = action.payload.message;
 			})
-			.addCase(updateUser, (state, action) => {
+			.addCase(updateUser.fulfilled, (state, action) => {
 				const updatedUser = action.payload;
 				const userIndex = state.users.findIndex(
 					(user) => user._id === updatedUser._id

@@ -23,7 +23,7 @@ export const fetchAdminOrders = createAsyncThunk(
 
 // Async thunk to update order status
 export const updateOrderStatus = createAsyncThunk(
-	'adminOrders/fetchAdminOrders',
+	'adminOrders/updateOrderStatus',
 	async ({ id, status }, { rejectWithValue }) => {
 		try {
 			const response = await axios.put(
@@ -44,7 +44,7 @@ export const updateOrderStatus = createAsyncThunk(
 
 // Async thunk to delete an order
 export const deleteOrder = createAsyncThunk(
-	'adminOrders/fetchAdminOrders',
+	'adminOrders/deleteOrder',
 	async (id, { rejectWithValue }) => {
 		try {
 			await axios.delete(
@@ -89,7 +89,7 @@ const adminOrderSlice = createSlice({
 				}, 0);
 				state.totalSales = totalSales;
 			})
-			.addCase(fetchAdminOrders.pending, (state, action) => {
+			.addCase(fetchAdminOrders.rejected, (state, action) => {
 				state.loading = false;
 				state.error = action.payload.message;
 			})
