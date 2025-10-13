@@ -31,13 +31,14 @@ const Home = () => {
 				const response = await axios.get(
 					`${import.meta.env.VITE_BACKEND_URL}/api/products/best-seller`
 				);
-				setBestSellerProduct(response);
+				setBestSellerProduct(response.data);
 			} catch (error) {
 				console.error(error);
 			}
 		};
 		fetchBestSeller();
 	}, [dispatch]);
+
 	return (
 		<div>
 			<Hero />
