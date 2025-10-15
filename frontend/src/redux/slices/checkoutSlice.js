@@ -7,11 +7,13 @@ export const createCheckout = createAsyncThunk(
 	async (checkoutData, rejectWithValue) => {
 		try {
 			const response = await axios.post(
-				`${import.meta.env.VITE_BACKEND_API}/api/checkout`,
+				`${import.meta.env.VITE_BACKEND_URL}/api/checkout`,
 				checkoutData,
 				{
 					headers: {
-						Authorization: `Bearer ${localStorage.getItem('userToken')}`,
+						Authorization: `Bearer ${JSON.parse(
+							localStorage.getItem('userToken')
+						)}`,
 					},
 				}
 			);
@@ -44,7 +46,7 @@ const checkoutSlice = createSlice({
 			.addCase(createCheckout.rejected, (state, action) => {
 				state.loading = false;
 				state.error =
-					action.payload.message || 'Failed to create checkout session';
+					action.payload?.message || 'Failed to create checkout session';
 			});
 	},
 });

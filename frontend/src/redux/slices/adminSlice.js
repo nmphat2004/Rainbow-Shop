@@ -24,7 +24,9 @@ export const addUser = createAsyncThunk(
 				userData,
 				{
 					headers: {
-						Authorization: `Bearer ${localStorage.getItem('userToken')}`,
+						Authorization: `Bearer ${JSON.parse(
+							localStorage.getItem('userToken')
+						)}`,
 					},
 				}
 			);
@@ -45,7 +47,9 @@ export const updateUser = createAsyncThunk(
 				{ name, email, role },
 				{
 					headers: {
-						Authorization: `Bearer ${localStorage.getItem('userToken')}`,
+						Authorization: `Bearer ${JSON.parse(
+							localStorage.getItem('userToken')
+						)}`,
 					},
 				}
 			);

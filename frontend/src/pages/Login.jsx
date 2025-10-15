@@ -4,6 +4,7 @@ import login from '../assets/login.webp';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../redux/slices/authSlice';
 import { mergeCart } from '../redux/slices/cartSlice';
+import { toast } from 'sonner';
 
 const Login = () => {
 	const [email, setEmail] = useState('');
@@ -11,7 +12,7 @@ const Login = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const location = useLocation();
-	const { user, guestId } = useSelector((state) => state.auth);
+	const { user, guestId, error } = useSelector((state) => state.auth);
 	const { cart } = useSelector((state) => state.cart);
 
 	// Get redirect parameter and check if it's checkout or something
@@ -33,6 +34,7 @@ const Login = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		dispatch(loginUser({ email, password }));
+		if (error) toast.warning(error, { duration: 1000 });
 	};
 
 	return (
