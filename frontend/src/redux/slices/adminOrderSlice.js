@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 // Async thunk to get all orders
-export const fetchAdminOrders = createAsyncThunk(
-	'adminOrders/fetchAdminOrders',
+export const fetchAllOrders = createAsyncThunk(
+	'adminOrders/fetchAllOrders',
 	async (_, { rejectWithValue }) => {
 		try {
 			const response = await axios.get(
@@ -75,11 +75,11 @@ const adminOrderSlice = createSlice({
 	reducers: {},
 	extraReducers: (builder) => {
 		builder
-			.addCase(fetchAdminOrders.pending, (state) => {
+			.addCase(fetchAllOrders.pending, (state) => {
 				state.loading = true;
 				state.error = null;
 			})
-			.addCase(fetchAdminOrders.fulfilled, (state, action) => {
+			.addCase(fetchAllOrders.fulfilled, (state, action) => {
 				state.loading = false;
 				state.orders = Array.isArray(action.payload) ? action.payload : [];
 				state.totalOrders = state.orders.length;
@@ -89,7 +89,7 @@ const adminOrderSlice = createSlice({
 				}, 0);
 				state.totalSales = totalSales;
 			})
-			.addCase(fetchAdminOrders.rejected, (state, action) => {
+			.addCase(fetchAllOrders.rejected, (state, action) => {
 				state.loading = false;
 				state.error = action.payload.message;
 			})

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchAdminProducts } from '../redux/slices/adminProductSlice';
-import { fetchAdminOrders } from '../redux/slices/adminOrderSlice';
+import { fetchAllOrders } from '../redux/slices/adminOrderSlice';
 
 const AdminHomePage = () => {
 	const dispatch = useDispatch();
@@ -21,7 +21,7 @@ const AdminHomePage = () => {
 
 	useEffect(() => {
 		dispatch(fetchAdminProducts());
-		dispatch(fetchAdminOrders());
+		dispatch(fetchAllOrders());
 	}, [dispatch]);
 
 	return (
