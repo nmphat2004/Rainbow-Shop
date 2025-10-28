@@ -142,9 +142,7 @@ export const mergeCart = createAsyncThunk(
 				},
 				{
 					headers: {
-						Authorization: `Bearer ${JSON.parse(
-							localStorage.getItem('userToken')
-						)}`,
+						Authorization: `Bearer ${localStorage.getItem('userToken')}`,
 					},
 				}
 			);

@@ -10,9 +10,7 @@ export const fetchAdminOrders = createAsyncThunk(
 				`${import.meta.env.VITE_BACKEND_URL}/api/admin/orders`,
 				{
 					headers: {
-						Authorization: `Bearer ${JSON.parse(
-							localStorage.getItem('userToken')
-						)}`,
+						Authorization: `Bearer ${localStorage.getItem('userToken')}`,
 					},
 				}
 			);
@@ -33,9 +31,7 @@ export const updateOrderStatus = createAsyncThunk(
 				{ status },
 				{
 					headers: {
-						Authorization: `Bearer ${JSON.parse(
-							localStorage.getItem('userToken')
-						)}`,
+						Authorization: `Bearer ${localStorage.getItem('userToken')}`,
 					},
 				}
 			);
@@ -56,9 +52,7 @@ export const deleteOrder = createAsyncThunk(
 
 				{
 					headers: {
-						Authorization: `Bearer ${JSON.parse(
-							localStorage.getItem('userToken')
-						)}`,
+						Authorization: `Bearer ${localStorage.getItem('userToken')}`,
 					},
 				}
 			);
@@ -73,7 +67,7 @@ const adminOrderSlice = createSlice({
 	name: 'adminOrders',
 	initialState: {
 		orders: [],
-		totalOrder: 0,
+		totalOrders: 0,
 		totalSales: 0,
 		loading: false,
 		error: null,
@@ -88,7 +82,7 @@ const adminOrderSlice = createSlice({
 			.addCase(fetchAdminOrders.fulfilled, (state, action) => {
 				state.loading = false;
 				state.orders = Array.isArray(action.payload) ? action.payload : [];
-				state.totalOrder = state.orders.length;
+				state.totalOrders = state.orders.length;
 
 				const totalSales = action.payload.reduce((acc, order) => {
 					return acc + order.totalPrice;

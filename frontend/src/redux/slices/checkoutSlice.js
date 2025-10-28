@@ -11,9 +11,7 @@ export const createCheckout = createAsyncThunk(
 				checkoutData,
 				{
 					headers: {
-						Authorization: `Bearer ${JSON.parse(
-							localStorage.getItem('userToken')
-						)}`,
+						Authorization: `Bearer ${localStorage.getItem('userToken')}`,
 					},
 				}
 			);

@@ -70,7 +70,7 @@ const adminProductsSlice = createSlice({
 			})
 			.addCase(fetchAdminProducts.rejected, (state, action) => {
 				state.loading = false;
-				state.error = action.payload.message;
+				state.error = action.error.message;
 			})
 			.addCase(createProduct.fulfilled, (state, action) => {
 				state.loading = false;

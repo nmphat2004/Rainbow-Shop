@@ -56,9 +56,7 @@ const Checkout = () => {
 				},
 				{
 					headers: {
-						Authorization: `Bearer ${JSON.parse(
-							localStorage.getItem('userToken')
-						)}`,
+						Authorization: `Bearer ${localStorage.getItem('userToken')}`,
 					},
 				}
 			);
@@ -77,9 +75,7 @@ const Checkout = () => {
 				{},
 				{
 					headers: {
-						Authorization: `Bearer ${JSON.parse(
-							localStorage.getItem('userToken')
-						)}`,
+						Authorization: `Bearer ${localStorage.getItem('userToken')}`,
 					},
 				}
 			);
