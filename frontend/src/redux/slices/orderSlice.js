@@ -7,7 +7,7 @@ export const fetchUserOrder = createAsyncThunk(
 	async (_, { rejectWithValue }) => {
 		try {
 			const response = await axios.get(
-				`${import.meta.env.VITE_BACKEND_API}/api/orders/my-orders`,
+				`${import.meta.env.VITE_BACKEND_URL}/api/orders/my-orders`,
 				{
 					headers: {
 						Authorization: `Bearer ${JSON.parse(
@@ -29,7 +29,7 @@ export const fetchOrderDetails = createAsyncThunk(
 	async (orderId, { rejectWithValue }) => {
 		try {
 			const response = await axios.get(
-				`${import.meta.env.VITE_BACKEND_API}/api/orders/${orderId}`,
+				`${import.meta.env.VITE_BACKEND_URL}/api/orders/${orderId}`,
 				{
 					headers: {
 						Authorization: `Bearer ${JSON.parse(

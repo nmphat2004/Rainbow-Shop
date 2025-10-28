@@ -62,7 +62,7 @@ const Navbar = () => {
 				</div>
 				{/* Icons */}
 				<div className='flex items-center space-x-4'>
-					{user?.role === 'admin' && (
+					{user && user?.role === 'admin' && (
 						<Link
 							to='/admin'
 							className='block bg-black px-2 rounded text-sm text-white'>
