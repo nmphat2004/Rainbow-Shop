@@ -1,19 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import {
-	fetchProductDetails,
-	updateProduct,
-} from '../../redux/slices/productsSlice';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { createProduct } from '../../redux/slices/adminProductSlice';
+import { toast } from 'sonner';
 
-const EditProductPage = () => {
+const CreateProductPage = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const { id } = useParams();
-	const { selectedProduct, loading, error } = useSelector(
-		(state) => state.products
-	);
+	const { loading, error } = useSelector((state) => state.adminProducts);
 
 	const [uploading, setUploading] = useState(false);
 
@@ -21,6 +16,7 @@ const EditProductPage = () => {
 		name: '',
 		description: '',
 		price: 0,
+		discountPrice: 0,
 		countInStock: 0,
 		sku: '',
 		category: '',
@@ -31,22 +27,24 @@ const EditProductPage = () => {
 		material: '',
 		gender: '',
 		images: [],
+		isFeatured: false,
+		isPublished: true,
 	});
 
-	useEffect(() => {
-		if (id) {
-			dispatch(fetchProductDetails(id));
-		}
-	}, [dispatch, id]);
-
-	useEffect(() => {
-		if (selectedProduct) setProductData(selectedProduct);
-	}, [selectedProduct]);
-
 	const handleChange = (e) => {
-		const { name, value } = e.target;
+		const { name, value, type, checked } = e.target;
 
-		setProductData((prevData) => ({ ...prevData, [name]: value }));
+		setProductData((prevData) => ({
+			...prevData,
+			[name]:
+				type === 'checkbox'
+					? checked
+					: value === 'true'
+					? true
+					: value === 'false'
+					? false
+					: value,
+		}));
 	};
 
 	const handleImageUpload = async (e) => {
@@ -76,8 +74,12 @@ const EditProductPage = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		dispatch(updateProduct({ id, productData }));
-		navigate('/admin/products');
+		if (['Men', 'Women', 'Unisex'].includes(productData.gender)) {
+			dispatch(createProduct(productData));
+			navigate('/admin/products');
+		} else {
+			toast.error('Gender invalid');
+		}
 	};
 
 	if (loading) return <p>Loading...</p>;
@@ -85,7 +87,7 @@ const EditProductPage = () => {
 
 	return (
 		<div className='max-w-5xl mx-auto p-6 shadow-md rounded-md'>
-			<h2 className='text-3xl font-bold mb-6'>Edit Product</h2>
+			<h2 className='text-3xl font-bold mb-6'>Add Product</h2>
 			<form onSubmit={handleSubmit}>
 				{/* Name */}
 				<div className='mb-6'>
@@ -120,6 +122,18 @@ const EditProductPage = () => {
 						type='number'
 						name='price'
 						value={productData.price}
+						onChange={handleChange}
+						className='w-full border border-gray-300 rounded-md p-2'
+					/>
+				</div>
+
+				{/* Discount Price */}
+				<div className='mb-6'>
+					<label className='block font-semibold mb-2'>Discount Price</label>
+					<input
+						type='number'
+						name='discountPrice'
+						value={productData.discountPrice}
 						onChange={handleChange}
 						className='w-full border border-gray-300 rounded-md p-2'
 					/>
@@ -181,7 +195,7 @@ const EditProductPage = () => {
 					<input
 						type='text'
 						name='sizes'
-						value={productData.sizes?.join(',')}
+						value={productData.sizes.join(',')}
 						onChange={(e) =>
 							setProductData({
 								...productData,
@@ -200,7 +214,7 @@ const EditProductPage = () => {
 					<input
 						type='text'
 						name='colors'
-						value={productData.colors?.join(',')}
+						value={productData.colors.join(',')}
 						onChange={(e) =>
 							setProductData({
 								...productData,
@@ -245,6 +259,68 @@ const EditProductPage = () => {
 						onChange={handleChange}
 						className='w-full border border-gray-300 rounded-md p-2'
 					/>
+					{productData.gender.trim() !== '' &&
+						!['Men', 'Women', 'Unisex'].includes(productData.gender) && (
+							<p className='text-red-500 mt-1'>
+								Gender invalid — only “Men”, “Women”, or “Unisex” allowed.
+							</p>
+						)}
+				</div>
+
+				{/* isFeatured */}
+				<div className='mb-6'>
+					<label className='block font-semibold mb-2'>Feature</label>
+					<div className='flex gap-4'>
+						<label className='flex items-center gap-2'>
+							<input
+								type='radio'
+								name='isFeatured'
+								value='true'
+								checked={productData.isFeatured === true}
+								onChange={handleChange}
+							/>
+							Yes
+						</label>
+
+						<label className='flex items-center gap-2'>
+							<input
+								type='radio'
+								name='isFeatured'
+								value='false'
+								checked={productData.isFeatured === false}
+								onChange={handleChange}
+							/>
+							No
+						</label>
+					</div>
+				</div>
+
+				{/* isPublished */}
+				<div className='mb-6'>
+					<label className='block font-semibold mb-2'>Publish</label>
+					<div className='flex gap-4'>
+						<label className='flex items-center gap-2'>
+							<input
+								type='radio'
+								name='isPublished'
+								value='true'
+								checked={productData.isPublished === true}
+								onChange={handleChange}
+							/>
+							Yes
+						</label>
+
+						<label className='flex items-center gap-2'>
+							<input
+								type='radio'
+								name='isPublished'
+								value='false'
+								checked={productData.isPublished === false}
+								onChange={handleChange}
+							/>
+							No
+						</label>
+					</div>
 				</div>
 
 				{/* Image Upload */}
@@ -267,10 +343,10 @@ const EditProductPage = () => {
 				<button
 					type='submit'
 					className='w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition-colors'>
-					Update Product
+					{loading ? 'Creating' : 'Create Product'}
 				</button>
 			</form>
 		</div>
 	);
 };
-export default EditProductPage;
+export default CreateProductPage;
