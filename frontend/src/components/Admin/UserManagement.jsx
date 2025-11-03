@@ -1,14 +1,32 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import {
+	addUser,
+	deleteUser,
+	fetchUsers,
+	updateUser,
+} from '../../redux/slices/adminSlice';
+import { toast } from 'sonner';
 
 const UserManagement = () => {
-	const user = [
-		{
-			_id: 13131,
-			name: 'John Doe',
-			email: 'john@example.com',
-			role: 'admin',
-		},
-	];
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
+	const { user } = useSelector((state) => state.auth);
+	const { users, loading, error } = useSelector((state) => state.admin);
+
+	useEffect(() => {
+		if (user && user.role !== 'admin') {
+			navigate('/');
+		}
+	}, [user, navigate]);
+
+	useEffect(() => {
+		if (user && user.role === 'admin') {
+			dispatch(fetchUsers());
+		}
+	}, [user, dispatch]);
 
 	const [formData, setFormData] = useState({
 		name: '',
@@ -26,29 +44,53 @@ const UserManagement = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		try {
+			dispatch(addUser(formData));
 
-		// Reset the form after submission
-		setFormData({
-			name: '',
-			email: '',
-			password: '',
-			role: 'customer',
-		});
+			// Reset the form after submission
+			setFormData({
+				name: '',
+				email: '',
+				password: '',
+				role: 'customer',
+			});
+
+			toast.success('Add a user successfully!');
+		} catch (error) {
+			console.error(error);
+			toast.error('Failed to add user');
+		}
 	};
 
 	const handleRoleChange = (userId, newRole) => {
-		console.log({ id: userId, role: newRole });
+		try {
+			dispatch(updateUser({ id: userId, role: newRole }));
+			toast.success('Update role successfully!');
+		} catch (error) {
+			console.error(error);
+			toast.error('Failed to update role');
+		}
 	};
 
 	const handleDeleteUser = (userId) => {
+		console.log(userId);
+
 		if (window.confirm('Are you sure to delete this user?')) {
-			console.log(userId);
+			try {
+				dispatch(deleteUser(userId));
+				toast.success('Delete user successfully!');
+			} catch (error) {
+				console.error(error);
+				toast.error('Failed to delete user');
+			}
 		}
 	};
 
 	return (
 		<div className='max-w-7xl mx-auto'>
 			<h2 className='text-2xl font-bold mb-4'>User Management</h2>
+			{loading && <p>Loading...</p>}
+			{error && <p>Error: {error}</p>}
 			{/* Add New User Form */}
 			<div className='p-6 rounded-lg mb-6'>
 				<h3 className='text-lg font-bold mb-4'>Add New User</h3>
@@ -94,7 +136,7 @@ const UserManagement = () => {
 							onChange={handleChange}
 							className='w-full p-2 border rounded'>
 							<option value='customer'>Customer</option>
-							<option value='Admin'>Admin</option>
+							<option value='admin'>Admin</option>
 						</select>
 					</div>
 					<button
@@ -117,7 +159,7 @@ const UserManagement = () => {
 						</tr>
 					</thead>
 					<tbody>
-						{user.map((user) => (
+						{users.map((user) => (
 							<tr key={user._id} className='border-b hover:bg-gray-50 '>
 								<td className='p-4 font-medium text-gray-900 whitespace-nowrap'>
 									{user.name}

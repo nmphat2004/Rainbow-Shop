@@ -1,44 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { fetchUserOrder } from '../redux/slices/orderSlice';
 
 const MyOrdersPage = () => {
 	const navigate = useNavigate();
-	const [orders, setOrders] = useState([]);
+	const dispatch = useDispatch();
+	const { orders, loading, error } = useSelector((state) => state.order);
 
 	useEffect(() => {
-		setTimeout(() => {
-			const mockOrders = [
-				{
-					_id: '123456',
-					createAt: new Date(),
-					shippingAddress: { city: 'New York', country: 'USA' },
-					orderItems: [
-						{
-							name: 'Product 1',
-							image: 'https://picsum.photos/500/500?random=1',
-						},
-					],
-					totalPrice: 100,
-					isPaid: true,
-				},
-				{
-					_id: '34567',
-					createAt: new Date(),
-					shippingAddress: { city: 'New York', country: 'USA' },
-					orderItems: [
-						{
-							name: 'Product 2',
-							image: 'https://picsum.photos/500/500?random=2',
-						},
-					],
-					totalPrice: 100,
-					isPaid: true,
-				},
-			];
+		dispatch(fetchUserOrder());
+	}, [dispatch]);
 
-			setOrders(mockOrders);
-		}, 1000);
-	}, []);
+	if (loading) return <p>Loading...</p>;
+	if (error) return <p>Error: {error}</p>;
 
 	return (
 		<div className='max-w-7xl mx-auto p-4 sm:p-6'>
@@ -74,8 +49,8 @@ const MyOrdersPage = () => {
 										#{order._id}
 									</td>
 									<td className='py-2 px-2 sm:py-4 sm:px-4'>
-										{new Date(order.createAt).toLocaleDateString()}{' '}
-										{new Date(order.createAt).toLocaleTimeString()}
+										{new Date(order.createdAt).toLocaleDateString()}{' '}
+										{new Date(order.createdAt).toLocaleTimeString()}
 									</td>
 									<td className='py-2 px-2 sm:py-4 sm:px-4'>
 										{order.shippingAddress
