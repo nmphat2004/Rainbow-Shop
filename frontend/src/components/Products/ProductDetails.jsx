@@ -82,7 +82,7 @@ const ProductDetails = ({ productId }) => {
 				<div className='max-w-6xl mx-auto bg-white p-8 rounded-lg'>
 					<div className='flex flex-col md:flex-row'>
 						{/* Left Thumbnails */}
-						<div className='hidden md:flex flex-col space-y-4 mr-6'>
+						<div className='hidden md:flex flex-col space-y-4 mr-6 overflow-y-scroll h-110'>
 							{selectedProduct.images.map((image, index) => (
 								<img
 									key={index}
@@ -132,7 +132,7 @@ const ProductDetails = ({ productId }) => {
 									`${selectedProduct.originalPrice}`}
 							</p>
 							<p className='text-xl text-gray-500 mb-2'>
-								$ {selectedProduct.price}
+								{selectedProduct.price.toLocaleString()}₫
 							</p>
 							<p className='text-gray-600 mb-4'>
 								{selectedProduct.description}

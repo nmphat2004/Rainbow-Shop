@@ -7,6 +7,7 @@ import {
 	fetchUsers,
 	updateUser,
 } from '../../redux/slices/adminSlice';
+import { toast } from 'sonner';
 
 const UserManagement = () => {
 	const dispatch = useDispatch();
@@ -43,24 +44,45 @@ const UserManagement = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		dispatch(addUser(formData));
+		try {
+			dispatch(addUser(formData));
 
-		// Reset the form after submission
-		setFormData({
-			name: '',
-			email: '',
-			password: '',
-			role: 'customer',
-		});
+			// Reset the form after submission
+			setFormData({
+				name: '',
+				email: '',
+				password: '',
+				role: 'customer',
+			});
+
+			toast.success('Add a user successfully!');
+		} catch (error) {
+			console.error(error);
+			toast.error('Failed to add user');
+		}
 	};
 
 	const handleRoleChange = (userId, newRole) => {
-		dispatch(updateUser({ id: userId, role: newRole }));
+		try {
+			dispatch(updateUser({ id: userId, role: newRole }));
+			toast.success('Update role successfully!');
+		} catch (error) {
+			console.error(error);
+			toast.error('Failed to update role');
+		}
 	};
 
 	const handleDeleteUser = (userId) => {
+		console.log(userId);
+
 		if (window.confirm('Are you sure to delete this user?')) {
-			dispatch(deleteUser(userId));
+			try {
+				dispatch(deleteUser(userId));
+				toast.success('Delete user successfully!');
+			} catch (error) {
+				console.error(error);
+				toast.error('Failed to delete user');
+			}
 		}
 	};
 
@@ -114,7 +136,7 @@ const UserManagement = () => {
 							onChange={handleChange}
 							className='w-full p-2 border rounded'>
 							<option value='customer'>Customer</option>
-							<option value='Admin'>Admin</option>
+							<option value='admin'>Admin</option>
 						</select>
 					</div>
 					<button

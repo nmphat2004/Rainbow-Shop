@@ -48,22 +48,28 @@ const CreateProductPage = () => {
 	};
 
 	const handleImageUpload = async (e) => {
-		const file = e.target.files[0];
-		const formData = new FormData();
-		formData.append('image', file);
+		const files = Array.from(e.target.files);
 
 		try {
 			setUploading(true);
-			const { data } = await axios.post(
-				`${import.meta.env.VITE_BACKEND_URL}/api/upload`,
-				formData,
-				{
-					headers: { 'Content-Type': 'multipart/form-data' },
-				}
-			);
+			const uploadPromises = files.map(async (file) => {
+				const formData = new FormData();
+				formData.append('image', file);
+
+				const { data } = await axios.post(
+					`${import.meta.env.VITE_BACKEND_URL}/api/upload`,
+					formData,
+					{
+						headers: { 'Content-Type': 'multipart/form-data' },
+					}
+				);
+				return { url: data.imageUrl, altText: '' };
+			});
+
+			const uploadedImages = await Promise.all(uploadPromises);
 			setProductData((prev) => ({
-				...prev.images,
-				images: [{ url: data.imageUrl, altText: '' }],
+				...prev,
+				images: [...prev.images, ...uploadedImages],
 			}));
 			setUploading(false);
 		} catch (error) {
@@ -196,13 +202,15 @@ const CreateProductPage = () => {
 						type='text'
 						name='sizes'
 						value={productData.sizes.join(',')}
-						onChange={(e) =>
-							setProductData({
-								...productData,
-								sizes: e.target.value.split(',').map((size) => size.trim()),
-							})
-						}
 						className='w-full border border-gray-300 rounded-md p-2'
+						onChange={(e) =>
+							setProductData((prev) => ({
+								...prev,
+								sizes: e.target.value
+									? e.target.value.split(',').map((size) => size.trim())
+									: [],
+							}))
+						}
 					/>
 				</div>
 
@@ -216,10 +224,12 @@ const CreateProductPage = () => {
 						name='colors'
 						value={productData.colors.join(',')}
 						onChange={(e) =>
-							setProductData({
-								...productData,
-								colors: e.target.value.split(',').map((color) => color.trim()),
-							})
+							setProductData((prev) => ({
+								...prev,
+								colors: e.target.value
+									? e.target.value.split(',').map((color) => color.trim())
+									: [],
+							}))
 						}
 						className='w-full border border-gray-300 rounded-md p-2'
 					/>
@@ -259,7 +269,7 @@ const CreateProductPage = () => {
 						onChange={handleChange}
 						className='w-full border border-gray-300 rounded-md p-2'
 					/>
-					{productData.gender.trim() !== '' &&
+					{productData.gender?.trim() !== '' &&
 						!['Men', 'Women', 'Unisex'].includes(productData.gender) && (
 							<p className='text-red-500 mt-1'>
 								Gender invalid — only “Men”, “Women”, or “Unisex” allowed.
@@ -325,17 +335,44 @@ const CreateProductPage = () => {
 
 				{/* Image Upload */}
 				<div className='mb-6'>
-					<label className='block font-semibold mb-2'>Upload Image</label>
-					<input type='file' onChange={handleImageUpload} />
-					{uploading && <p>Uploading image...</p>}
-					<div className='flex gap-4 mt-4'>
+					<label className='block font-semibold mb-2'>Upload Images</label>
+					<input
+						type='file'
+						onChange={handleImageUpload}
+						multiple
+						className='mb-4'
+						accept='image/*'
+					/>
+					{uploading && <p className='text-blue-500'>Uploading images...</p>}
+					<div className='flex flex-wrap gap-4 mt-4'>
 						{productData.images.map((image, index) => (
-							<div key={index}>
+							<div key={index} className='relative group'>
 								<img
 									src={image.url}
 									alt={image.altText || 'Product Image'}
 									className='w-20 h-20 object-cover rounded-md shadow-md'
 								/>
+								<button
+									type='button'
+									onClick={() => {
+										setProductData((prev) => ({
+											...prev,
+											images: prev.images.filter((_, i) => i !== index),
+										}));
+									}}
+									className='absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity'>
+									<svg
+										xmlns='http://www.w3.org/2000/svg'
+										className='h-4 w-4'
+										viewBox='0 0 20 20'
+										fill='currentColor'>
+										<path
+											fillRule='evenodd'
+											d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
+											clipRule='evenodd'
+										/>
+									</svg>
+								</button>
 							</div>
 						))}
 					</div>

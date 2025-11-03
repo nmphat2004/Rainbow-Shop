@@ -127,8 +127,10 @@ const NewArrivals = () => {
 						/>
 						<div className='absolute bottom-0 left-0 right-0 backdrop-blur-sm text-white p-4 rounded-b-lg'>
 							<Link to={`product/${product._id}`} className='block'>
-								<h4 className='font-medium'>{product.name}</h4>
-								<p className='mt-1'>$ {product.price}</p>
+								<h4 className='font-medium text-black'>{product.name}</h4>
+								<p className='mt-1 text-black'>
+									{product.price.toLocaleString()}₫
+								</p>
 							</Link>
 						</div>
 					</div>

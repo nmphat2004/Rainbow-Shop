@@ -1,25 +1,25 @@
-const express = require('express')
-const multer = require('multer')
-const cloudinary = require('cloudinary').v2
-const uploadController = require('../controller/upload.controller')
+const express = require('express');
+const multer = require('multer');
+const cloudinary = require('cloudinary').v2;
+const uploadController = require('../controllers/upload.controller');
 
-require('dotenv').config()
+require('dotenv').config();
 
 // Cloudinary Configuration
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-})
+	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+	api_key: process.env.CLOUDINARY_API_KEY,
+	api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-const router = express.Router()
+const router = express.Router();
 
 // Multer setup using memory storage
-const storage = multer.memoryStorage()
+const storage = multer.memoryStorage();
 const upload = multer({
-  storage
-})
+	storage,
+});
 
-router.post('/', upload.single('image'), uploadController.uploadImage)
+router.post('/', upload.single('image'), uploadController.uploadImage);
 
-module.exports = router
+module.exports = router;

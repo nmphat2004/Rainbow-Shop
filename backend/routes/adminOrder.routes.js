@@ -3,7 +3,7 @@ const {
   protect,
   admin
 } = require('../middleware/auth')
-const adminOrderController = require('../controller/adminOrder.controller')
+const adminOrderController = require('../controllers/adminOrder.controller')
 
 const router = express.Router()
 

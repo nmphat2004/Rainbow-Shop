@@ -57,7 +57,7 @@ export const updateUser = createAsyncThunk(
 );
 
 // Async thunk delete user
-export const deleteUser = createAsyncThunk('admin/updateUser', async (id) => {
+export const deleteUser = createAsyncThunk('admin/deleteUser', async (id) => {
 	await axios.delete(
 		`${import.meta.env.VITE_BACKEND_URL}/api/admin/users/${id}`,
 		{
@@ -88,7 +88,7 @@ const adminSlice = createSlice({
 			})
 			.addCase(fetchUsers.rejected, (state, action) => {
 				state.loading = false;
-				state.error = action.payload.message;
+				state.error = action.payload?.message;
 			})
 			.addCase(updateUser.fulfilled, (state, action) => {
 				const updatedUser = action.payload;
@@ -98,7 +98,10 @@ const adminSlice = createSlice({
 
 				if (userIndex !== -1) state.users[userIndex] = updatedUser;
 			})
-			.addCase(deleteUser.pending, (state, action) => {
+			.addCase(deleteUser.pending, (state) => {
+				state.loading = true;
+			})
+			.addCase(deleteUser.fulfilled, (state, action) => {
 				state.users = state.users.filter((user) => user._id !== action.payload);
 			})
 			.addCase(addUser.pending, (state) => {
