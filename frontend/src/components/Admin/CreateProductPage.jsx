@@ -40,10 +40,10 @@ const CreateProductPage = () => {
 				type === 'checkbox'
 					? checked
 					: value === 'true'
-					? true
-					: value === 'false'
-					? false
-					: value,
+						? true
+						: value === 'false'
+							? false
+							: value,
 		}));
 	};
 
@@ -92,30 +92,30 @@ const CreateProductPage = () => {
 	if (error) return <p>Error: {error}</p>;
 
 	return (
-		<div className='max-w-5xl mx-auto p-6 shadow-md rounded-md'>
-			<h2 className='text-3xl font-bold mb-6'>Add Product</h2>
+		<div className='max-w-5xl mx-auto p-6 bg-white dark:bg-gray-800 shadow-md rounded-md transition-colors duration-300'>
+			<h2 className='text-3xl font-bold mb-6 dark:text-white'>Add Product</h2>
 			<form onSubmit={handleSubmit}>
 				{/* Name */}
 				<div className='mb-6'>
-					<label className='block font-semibold mb-2'>Product Name</label>
+					<label className='block font-semibold mb-2 dark:text-gray-300'>Product Name</label>
 					<input
 						type='text'
 						name='name'
 						value={productData.name}
 						onChange={handleChange}
-						className='w-full border border-gray-300 rounded-md p-2'
+						className='w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-md p-2'
 						required
 					/>
 				</div>
 
 				{/* Description */}
 				<div className='mb-6'>
-					<label className='block font-semibold mb-2'>Description</label>
+					<label className='block font-semibold mb-2 dark:text-gray-300'>Description</label>
 					<textarea
 						name='description'
 						value={productData.description}
 						onChange={handleChange}
-						className='w-full border border-gray-300 rounded-md p-2'
+						className='w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-md p-2'
 						rows={4}
 						required
 					/>
@@ -123,86 +123,86 @@ const CreateProductPage = () => {
 
 				{/* Price */}
 				<div className='mb-6'>
-					<label className='block font-semibold mb-2'>Price</label>
+					<label className='block font-semibold mb-2 dark:text-gray-300'>Price</label>
 					<input
 						type='number'
 						name='price'
 						value={productData.price}
 						onChange={handleChange}
-						className='w-full border border-gray-300 rounded-md p-2'
+						className='w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-md p-2'
 					/>
 				</div>
 
 				{/* Discount Price */}
 				<div className='mb-6'>
-					<label className='block font-semibold mb-2'>Discount Price</label>
+					<label className='block font-semibold mb-2 dark:text-gray-300'>Discount Price</label>
 					<input
 						type='number'
 						name='discountPrice'
 						value={productData.discountPrice}
 						onChange={handleChange}
-						className='w-full border border-gray-300 rounded-md p-2'
+						className='w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-md p-2'
 					/>
 				</div>
 
 				{/* Count In Stock */}
 				<div className='mb-6'>
-					<label className='block font-semibold mb-2'>Count In Stock</label>
+					<label className='block font-semibold mb-2 dark:text-gray-300'>Count In Stock</label>
 					<input
 						type='number'
 						name='countInStock'
 						value={productData.countInStock}
 						onChange={handleChange}
-						className='w-full border border-gray-300 rounded-md p-2'
+						className='w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-md p-2'
 					/>
 				</div>
 
 				{/* SKU */}
 				<div className='mb-6'>
-					<label className='block font-semibold mb-2'>SKU</label>
+					<label className='block font-semibold mb-2 dark:text-gray-300'>SKU</label>
 					<input
 						type='text'
 						name='sku'
 						value={productData.sku}
 						onChange={handleChange}
-						className='w-full border border-gray-300 rounded-md p-2'
+						className='w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-md p-2'
 					/>
 				</div>
 
 				{/* Category */}
 				<div className='mb-6'>
-					<label className='block font-semibold mb-2'>Category</label>
+					<label className='block font-semibold mb-2 dark:text-gray-300'>Category</label>
 					<input
 						type='text'
 						name='category'
 						value={productData.category}
 						onChange={handleChange}
-						className='w-full border border-gray-300 rounded-md p-2'
+						className='w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-md p-2'
 					/>
 				</div>
 
 				{/* Brand */}
 				<div className='mb-6'>
-					<label className='block font-semibold mb-2'>Brand</label>
+					<label className='block font-semibold mb-2 dark:text-gray-300'>Brand</label>
 					<input
 						type='text'
 						name='brand'
 						value={productData.brand}
 						onChange={handleChange}
-						className='w-full border border-gray-300 rounded-md p-2'
+						className='w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-md p-2'
 					/>
 				</div>
 
 				{/* Sizes */}
 				<div className='mb-6'>
-					<label className='block font-semibold mb-2'>
+					<label className='block font-semibold mb-2 dark:text-gray-300'>
 						Size (comma-separated)
 					</label>
 					<input
 						type='text'
 						name='sizes'
 						value={productData.sizes.join(',')}
-						className='w-full border border-gray-300 rounded-md p-2'
+						className='w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-md p-2'
 						onChange={(e) =>
 							setProductData((prev) => ({
 								...prev,
@@ -216,7 +216,7 @@ const CreateProductPage = () => {
 
 				{/* Colors */}
 				<div className='mb-6'>
-					<label className='block font-semibold mb-2'>
+					<label className='block font-semibold mb-2 dark:text-gray-300'>
 						Colors (comma-separated)
 					</label>
 					<input
@@ -231,43 +231,43 @@ const CreateProductPage = () => {
 									: [],
 							}))
 						}
-						className='w-full border border-gray-300 rounded-md p-2'
+						className='w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-md p-2'
 					/>
 				</div>
 
 				{/* Collections */}
 				<div className='mb-6'>
-					<label className='block font-semibold mb-2'>Collections</label>
+					<label className='block font-semibold mb-2 dark:text-gray-300'>Collections</label>
 					<input
 						type='text'
 						name='collections'
 						value={productData.collections}
 						onChange={handleChange}
-						className='w-full border border-gray-300 rounded-md p-2'
+						className='w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-md p-2'
 					/>
 				</div>
 
 				{/* Material */}
 				<div className='mb-6'>
-					<label className='block font-semibold mb-2'>Material</label>
+					<label className='block font-semibold mb-2 dark:text-gray-300'>Material</label>
 					<input
 						type='text'
 						name='material'
 						value={productData.material}
 						onChange={handleChange}
-						className='w-full border border-gray-300 rounded-md p-2'
+						className='w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-md p-2'
 					/>
 				</div>
 
 				{/* Gender */}
 				<div className='mb-6'>
-					<label className='block font-semibold mb-2'>Gender</label>
+					<label className='block font-semibold mb-2 dark:text-gray-300'>Gender</label>
 					<input
 						type='text'
 						name='gender'
 						value={productData.gender}
 						onChange={handleChange}
-						className='w-full border border-gray-300 rounded-md p-2'
+						className='w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-md p-2'
 					/>
 					{productData.gender?.trim() !== '' &&
 						!['Men', 'Women', 'Unisex'].includes(productData.gender) && (
@@ -279,9 +279,9 @@ const CreateProductPage = () => {
 
 				{/* isFeatured */}
 				<div className='mb-6'>
-					<label className='block font-semibold mb-2'>Feature</label>
+					<label className='block font-semibold mb-2 dark:text-gray-300'>Feature</label>
 					<div className='flex gap-4'>
-						<label className='flex items-center gap-2'>
+						<label className='flex items-center gap-2 dark:text-gray-300'>
 							<input
 								type='radio'
 								name='isFeatured'
@@ -307,7 +307,7 @@ const CreateProductPage = () => {
 
 				{/* isPublished */}
 				<div className='mb-6'>
-					<label className='block font-semibold mb-2'>Publish</label>
+					<label className='block font-semibold mb-2 dark:text-gray-300'>Publish</label>
 					<div className='flex gap-4'>
 						<label className='flex items-center gap-2'>
 							<input
@@ -335,7 +335,7 @@ const CreateProductPage = () => {
 
 				{/* Image Upload */}
 				<div className='mb-6'>
-					<label className='block font-semibold mb-2'>Upload Images</label>
+					<label className='block font-semibold mb-2 dark:text-gray-300'>Upload Images</label>
 					<input
 						type='file'
 						onChange={handleImageUpload}

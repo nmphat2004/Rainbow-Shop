@@ -17,7 +17,7 @@ const NewArrivals = () => {
 		const fetchNewArrivals = async () => {
 			try {
 				const response = await axios.get(
-					`${import.meta.env.VITE_BACKEND_URL}/api/products/new-arrivals`
+					`${import.meta.env.VITE_BACKEND_URL}/api/products/new-arrivals`,
 				);
 				setNewArrivals(response.data);
 			} catch (error) {
@@ -74,8 +74,10 @@ const NewArrivals = () => {
 	return (
 		<section className='py-16 px-4 lg:px-0'>
 			<div className='container mx-auto text-center mb-10 relative'>
-				<h2 className='text-3xl font-bold mb-4'>Explore New Arrivals</h2>
-				<p className='text-lg text-gray-600 mb-8'>
+				<h2 className='text-3xl font-bold mb-4 dark:text-white'>
+					Explore New Arrivals
+				</h2>
+				<p className='text-lg text-gray-600 dark:text-gray-400 mb-8'>
 					Discover the latest styles straight off the runway, freshly added to
 					keep your wardrobe on the cutting edge of fashion.
 				</p>
@@ -85,20 +87,20 @@ const NewArrivals = () => {
 					<button
 						onClick={() => scroll('left')}
 						disabled={!canScrollLeft}
-						className={`p-2 rounded border ${
-							canScrollLeft
-								? 'bg-white text-black'
-								: 'bg-gray-200 text-gray-400 cursor-not-allowed'
+						className={`p-2 rounded border dark:border-gray-600 ${
+							canScrollLeft ?
+								'bg-white text-black dark:bg-gray-700 dark:text-white'
+							:	'bg-gray-200 text-gray-400 dark:bg-gray-800 dark:text-gray-600 cursor-not-allowed'
 						}`}>
 						<FiChevronLeft className='text-2xl' />
 					</button>
 					<button
 						onClick={() => scroll('right')}
 						disabled={!canScrollRight}
-						className={`p-2 rounded border ${
-							canScrollRight
-								? 'bg-white text-black'
-								: 'bg-gray-200 text-gray-400 cursor-not-allowed'
+						className={`p-2 rounded border dark:border-gray-600 ${
+							canScrollRight ?
+								'bg-white text-black dark:bg-gray-700 dark:text-white'
+							:	'bg-gray-200 text-gray-400 dark:bg-gray-800 dark:text-gray-600 cursor-not-allowed'
 						}`}>
 						<FiChevronRight className='text-2xl' />
 					</button>
@@ -117,7 +119,7 @@ const NewArrivals = () => {
 				}`}>
 				{newArrivals.map((product) => (
 					<div
-						className='min-w-[100%] sm:min-w-[50%] lg:min-w-[30%] relative'
+						className='min-w-full sm:min-w-[50%] lg:min-w-[30%] relative'
 						key={product._id}>
 						<img
 							src={product.images[0]?.url}
@@ -125,10 +127,10 @@ const NewArrivals = () => {
 							className='w-full h '
 							draggable='false'
 						/>
-						<div className='absolute bottom-0 left-0 right-0 backdrop-blur-sm text-white p-4 rounded-b-lg'>
+						<div className='absolute bottom-0 left-0 right-0 bg-black/30 dark:bg-black/50 backdrop-blur-sm text-white p-4 rounded-b-lg transition-colors duration-300'>
 							<Link to={`product/${product._id}`} className='block'>
-								<h4 className='font-medium text-black'>{product.name}</h4>
-								<p className='mt-1 text-black'>
+								<h4 className='font-medium text-white'>{product.name}</h4>
+								<p className='mt-1 text-gray-200'>
 									{product.price.toLocaleString()}₫
 								</p>
 							</Link>

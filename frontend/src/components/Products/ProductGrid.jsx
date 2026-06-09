@@ -1,13 +1,12 @@
 import { Link } from 'react-router-dom';
 
-const ProductGrid = ({ products, loading, error }) => {
-	if (loading) return <p>Loading...</p>;
-	if (error) return <p>Error: {error}</p>;
+const ProductGrid = ({ products, error }) => {
+	if (error) return <p className='dark:text-red-400'>Error: {error}</p>;
 	return (
 		<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'>
 			{products.map((product, index) => (
 				<Link key={index} to={`/product/${product._id}`} className='block'>
-					<div className='bg-white p-4 rounded-lg'>
+					<div className='bg-white dark:bg-gray-800 p-4 rounded-lg'>
 						<div className='w-full h-96 mb-4'>
 							<img
 								src={product.images[0]?.url}
@@ -15,8 +14,8 @@ const ProductGrid = ({ products, loading, error }) => {
 								className='w-full h-full object-cover rounded-lg'
 							/>
 						</div>
-						<h3 className='text-sm mb-2'>{product.name}</h3>
-						<p className='text-gray-500 font-medium text-sm tracking-tighter'>
+						<h3 className='text-sm mb-2 dark:text-gray-200'>{product.name}</h3>
+						<p className='text-gray-500 dark:text-gray-400 font-medium text-sm tracking-tighter'>
 							$ {product.price}
 						</p>
 					</div>

@@ -6,6 +6,7 @@ import ProductGrid from '../components/Products/ProductGrid';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProductsByFilters } from '../redux/slices/productsSlice';
+import Skeletion from '../components/Common/Skeletion';
 
 const CollectionPage = () => {
 	const sidebarRef = useRef(null);
@@ -42,7 +43,7 @@ const CollectionPage = () => {
 			fetchProductsByFilters({
 				collection,
 				...queryParams,
-			})
+			}),
 		);
 	}, [dispatch, searchParams, collection]);
 
@@ -51,7 +52,7 @@ const CollectionPage = () => {
 			{/* Mobile filter button */}
 			<button
 				onClick={toggleSidebar}
-				className='lg:hidden border p-2 flex justify-center items-center'>
+				className='lg:hidden border dark:border-gray-600 p-2 flex justify-center items-center dark:text-gray-300'>
 				<FaFilter className='mr-2' /> Filters
 			</button>
 
@@ -60,18 +61,34 @@ const CollectionPage = () => {
 				ref={sidebarRef}
 				className={`${
 					isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-				} fixed inset-y-0 z-50 left-0 w-64 bg-white overflow-y-auto transition-transform duration-300 lg:static lg:translate-x-0`}>
+				} sticky inset-y-0 z-50 left-0 w-64 no-scrollbar bg-white dark:bg-gray-800 overflow-y-auto transition-transform duration-300 lg:sticky lg:top-28 lg:h-[calc(100vh-120px)] lg:translate-x-0`}>
 				<FilterSidebar />
 			</div>
 
-			<div className='flex-grow p-4'>
-				<h2 className='text-2xl uppercase mb-4'>All Collections</h2>
+			<div className='grow p-4'>
+				<h2 className='text-2xl uppercase mb-4 dark:text-white'>
+					All Collections
+				</h2>
 
 				{/* Sort Options */}
 				<SortOptions />
 
 				{/* Product Grid */}
-				<ProductGrid products={products} loading={loading} error={error} />
+				{loading ?
+					<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'>
+						{Array.from({ length: 8 }).map((_, i) => (
+							<div
+								key={i}
+								className='rounded-lg border border-gray-100 bg-white dark:bg-gray-800 dark:border-gray-700 p-4'>
+								<Skeletion className='w-full h-96 mb-4' />
+								<div>
+									<Skeletion className='w-3/4 h-4 mb-2' />
+									<Skeletion className='w-1/4 h-3 mb-2' />
+								</div>
+							</div>
+						))}
+					</div>
+				:	<ProductGrid products={products} error={error} />}
 			</div>
 		</div>
 	);

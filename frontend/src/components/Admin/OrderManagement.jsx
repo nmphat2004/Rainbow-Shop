@@ -5,6 +5,7 @@ import {
 	fetchAllOrders,
 	updateOrderStatus,
 } from '../../redux/slices/adminOrderSlice';
+import Skeletion from '../Common/Skeletion';
 
 const OrderManagement = () => {
 	const dispatch = useDispatch();
@@ -21,16 +22,17 @@ const OrderManagement = () => {
 		dispatch(updateOrderStatus({ id: orderID, status }));
 	};
 
-	if (loading) return <p>Loading...</p>;
-	if (error) return <p>Error: {error}</p>;
+	if (error) return <p className='dark:text-red-400'>Error: {error}</p>;
 
 	return (
 		<div className='max-w-7xl mx-auto p-6'>
-			<h2 className='text-2xl font-bold mb-6'>Order Management</h2>
+			<h2 className='text-2xl font-bold mb-6 dark:text-white'>
+				Order Management
+			</h2>
 
-			<div className='overflow-x-auto shadow-md sm:shadow-lg'>
-				<table className='min-w-full text-left '>
-					<thead className='bg-gray-100 text-xs uppercase text-gray-700'>
+			<div className='overflow-x-auto bg-white dark:bg-gray-800 shadow-md sm:shadow-lg transition-colors duration-300'>
+				<table className='min-w-full text-left dark:text-gray-400'>
+					<thead className='bg-gray-100 dark:bg-gray-700 text-xs uppercase text-gray-700 dark:text-gray-300'>
 						<tr>
 							<th className='py-3 px-4'>Order ID</th>
 							<th className='py-3 px-4'>Customer</th>
@@ -40,20 +42,44 @@ const OrderManagement = () => {
 						</tr>
 					</thead>
 					<tbody>
-						{orders.length > 0 ? (
+						{loading ?
+							Array.from({ length: 5 }).map((_, i) => (
+								<tr
+									key={i}
+									className='border-b border-gray-200 dark:border-gray-700'>
+									<td className='p-4'>
+										<Skeletion className='h-4 w-3/4' />
+									</td>
+									<td className='p-4'>
+										<Skeletion className='h-4 w-3/4' />
+									</td>
+									<td className='p-4'>
+										<Skeletion className='h-4 w-3/4' />
+									</td>
+									<td className='p-4'>
+										<Skeletion className='h-4 w-3/4' />
+									</td>
+									<td className='p-4'>
+										<Skeletion className='h-4 w-12' />
+									</td>
+								</tr>
+							))
+						: orders.length > 0 ?
 							orders.map((order) => (
 								<tr
 									key={order._id}
-									className='border-b border-gray-300 hover:bg-gray-50 cursor-pointer'>
-									<td className='py-4 px-4 font-medium text-gray-900 whitespace-nowrap'>
+									className='border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer transition-colors duration-200'>
+									<td className='py-4 px-4 font-medium text-gray-900 dark:text-gray-200 whitespace-nowrap'>
 										#{order._id}
 									</td>
-									<td className='p-4'>{order.user?.name}</td>
-									<td className='p-4'>{order.totalPrice.toFixed(2)}</td>
+									<td className='p-4 dark:text-gray-300'>{order.user?.name}</td>
+									<td className='p-4 dark:text-gray-300'>
+										{order.totalPrice.toFixed(2)}
+									</td>
 									<td className='p-4'>
 										<select
 											value={order.status}
-											className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5'
+											className='bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-200 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5'
 											onChange={(e) =>
 												handleStatusChange(order._id, e.target.value)
 											}>
@@ -72,13 +98,14 @@ const OrderManagement = () => {
 									</td>
 								</tr>
 							))
-						) : (
-							<tr>
-								<td colSpan={5} className='p-4 text-center text-gray-500'>
+						:	<tr>
+								<td
+									colSpan={5}
+									className='p-4 text-center text-gray-500 dark:text-gray-400'>
 									No Orders found.
 								</td>
 							</tr>
-						)}
+						}
 					</tbody>
 				</table>
 			</div>

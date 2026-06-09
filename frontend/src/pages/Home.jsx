@@ -9,6 +9,7 @@ import ProductGrid from '../components/Products/ProductGrid';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProductsByFilters } from '../redux/slices/productsSlice';
 import axios from 'axios';
+import Skeletion from '../components/Common/Skeletion';
 
 const Home = () => {
 	const dispatch = useDispatch();
@@ -22,14 +23,14 @@ const Home = () => {
 				gender: 'Women',
 				category: 'Top Wear',
 				limit: 8,
-			})
+			}),
 		);
 
 		// Fetch Best seller product
 		const fetchBestSeller = async () => {
 			try {
 				const response = await axios.get(
-					`${import.meta.env.VITE_BACKEND_URL}/api/products/best-seller`
+					`${import.meta.env.VITE_BACKEND_URL}/api/products/best-seller`,
 				);
 				setBestSellerProduct(response.data);
 			} catch (error) {
@@ -46,16 +47,32 @@ const Home = () => {
 			<NewArrivals />
 
 			{/* Best Seller */}
-			<h2 className='text-3xl text-center font-bold mb-4'>Best Seller</h2>
-			{bestSellerProduct ? (
+			<h2 className='text-3xl text-center font-bold mb-4 dark:text-white'>
+				Best Seller
+			</h2>
+			{bestSellerProduct && (
 				<ProductDetails productId={bestSellerProduct._id} />
-			) : (
-				<p className='text-center'>Loading best seller product...</p>
 			)}
 
 			<div className='container mx-auto'>
-				<h2 className='text-3xl text-center font-bold'>Top Wears for Women</h2>
-				<ProductGrid products={products} loading={loading} error={error} />
+				<h2 className='text-3xl text-center font-bold dark:text-white'>
+					Top Wears for Women
+				</h2>
+				{loading ?
+					<div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 '>
+						{Array.from({ length: 8 }).map((_, i) => (
+							<div
+								className='rounded-lg border border-gray-100 bg-white dark:bg-gray-800 dark:border-gray-700 p-4'
+								key={i}>
+								<Skeletion className='w-full h-96 mb-4' />
+								<div>
+									<Skeletion className='w-3/4 h-4 mb-2' />
+									<Skeletion className='w-1/4 h-4 mb-2' />
+								</div>
+							</div>
+						))}
+					</div>
+				:	<ProductGrid products={products} error={error} />}
 			</div>
 
 			<FeaturedCollection />

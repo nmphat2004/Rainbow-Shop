@@ -13,13 +13,13 @@ const GenderCollectionSection = () => {
 						alt='Women Collection'
 						className='w-full h-[700px] object-cover'
 					/>
-					<div className='absolute bottom-8 left-8 bg-white/90 p-4'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-3'>
+					<div className='absolute bottom-8 left-8 bg-white/90 dark:bg-gray-900/90 p-4'>
+						<h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-3'>
 							Women Collection
 						</h2>
 						<Link
 							to='collections/all?gender=Women'
-							className='text-gray-900 underline'>
+							className='text-gray-900 dark:text-gray-300 underline'>
 							Shop now
 						</Link>
 					</div>
@@ -32,13 +32,13 @@ const GenderCollectionSection = () => {
 						alt='Women Collection'
 						className='w-full h-[700px] object-cover'
 					/>
-					<div className='absolute bottom-8 left-8 bg-white/90 p-4'>
-						<h2 className='text-2xl font-bold text-gray-900 mb-3'>
+					<div className='absolute bottom-8 left-8 bg-white/90 dark:bg-gray-900/90 p-4'>
+						<h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-3'>
 							Men Collection
 						</h2>
 						<Link
 							to='collections/all?gender=Men'
-							className='text-gray-900 underline'>
+							className='text-gray-900 dark:text-gray-300 underline'>
 							Shop now
 						</Link>
 					</div>
