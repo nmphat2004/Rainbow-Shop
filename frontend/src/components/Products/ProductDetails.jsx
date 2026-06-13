@@ -87,11 +87,10 @@ const ProductDetails = ({ productId }) => {
 									key={index}
 									src={image.url}
 									alt={image.altText || `Thumbnail ${index}`}
-									className={`w-20 h-20 object-cover rounded-lg cursor-pointer border ${
-										mainImage === image.url ?
+									className={`w-20 h-20 object-cover rounded-lg cursor-pointer border ${mainImage === image.url ?
 											'border-black dark:border-white'
-										:	'border-white dark:border-gray-700'
-									}`}
+											: 'border-white dark:border-gray-700'
+										}`}
 									onClick={() => setMainImage(image.url)}
 								/>
 							))}
@@ -115,11 +114,10 @@ const ProductDetails = ({ productId }) => {
 									key={index}
 									src={image.url}
 									alt={image.altText || `Thumbnail ${index}`}
-									className={`w-20 h-20 object-cover rounded-lg cursor-pointer border ${
-										mainImage === image.url ?
+									className={`w-20 h-20 object-cover rounded-lg cursor-pointer border ${mainImage === image.url ?
 											'border-black dark:border-white'
-										:	'border-white dark:border-gray-700'
-									}`}
+											: 'border-white dark:border-gray-700'
+										}`}
 									onClick={() => setMainImage(image.url)}
 								/>
 							))}
@@ -132,10 +130,10 @@ const ProductDetails = ({ productId }) => {
 							</h1>
 							<p className='text-lg text-gray-600 dark:text-gray-400 mb-1 line-through'>
 								{selectedProduct.originalPrice &&
-									`${selectedProduct.originalPrice}`}
+									`$${selectedProduct.originalPrice}`}
 							</p>
 							<p className='text-xl text-gray-500 dark:text-gray-300 mb-2'>
-								{selectedProduct.price.toLocaleString()}₫
+								${selectedProduct.price.toLocaleString()}
 							</p>
 							<p className='text-gray-600 dark:text-gray-400 mb-4'>
 								{selectedProduct.description}
@@ -147,11 +145,10 @@ const ProductDetails = ({ productId }) => {
 										<button
 											key={color}
 											onClick={() => setSelectedColor(color)}
-											className={`w-8 h-8 rounded-full border ${
-												selectedColor === color ?
+											className={`w-8 h-8 rounded-full border ${selectedColor === color ?
 													'border-4 border-black dark:border-white'
-												:	'border-gray-300 dark:border-gray-600'
-											}`}
+													: 'border-gray-300 dark:border-gray-600'
+												}`}
 											style={{
 												backgroundColor: color.toLocaleLowerCase(),
 												filter: 'brightness(0.5)',
@@ -166,11 +163,10 @@ const ProductDetails = ({ productId }) => {
 										<button
 											key={size}
 											onClick={() => setSelectedSize(size)}
-											className={`px-4 py-2 rounded border dark:border-gray-600 ${
-												selectedSize === size ?
+											className={`px-4 py-2 rounded border dark:border-gray-600 ${selectedSize === size ?
 													'bg-black text-white dark:bg-white dark:text-black'
-												:	'dark:text-gray-300'
-											}`}>
+													: 'dark:text-gray-300'
+												}`}>
 											{size}
 										</button>
 									))}
@@ -196,11 +192,10 @@ const ProductDetails = ({ productId }) => {
 							<button
 								onClick={handleAddToCart}
 								disabled={isButtonDisabled}
-								className={`bg-black text-white dark:bg-white dark:text-black py-2 px-6 rounded w-full mb-4 ${
-									isButtonDisabled ?
+								className={`bg-black text-white dark:bg-white dark:text-black py-2 px-6 rounded w-full mb-4 ${isButtonDisabled ?
 										'cursor-not-allowed opacity-50'
-									:	'hover:bg-gray-900 dark:hover:bg-gray-200'
-								}`}>
+										: 'hover:bg-gray-900 dark:hover:bg-gray-200'
+									}`}>
 								{isButtonDisabled ? 'Adding...' : 'ADD TO CART'}
 							</button>
 
@@ -242,7 +237,7 @@ const ProductDetails = ({ productId }) => {
 									</div>
 								))}
 							</div>
-						:	<ProductGrid products={similarProducts} error={error} />}
+							: <ProductGrid products={similarProducts} error={error} />}
 					</div>
 				</div>
 			)}

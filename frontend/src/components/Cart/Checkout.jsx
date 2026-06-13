@@ -229,7 +229,7 @@ const Checkout = () => {
 								<PayPalButton
 									amount={cart.totalPrice}
 									onSuccess={handlePaymentSuccess}
-									onError={(err) => alert('Payment failed. Try again')}
+									onError={() => alert('Payment failed. Try again')}
 								/>
 							</div>
 						)}

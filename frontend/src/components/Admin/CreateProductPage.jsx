@@ -4,6 +4,20 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { createProduct } from '../../redux/slices/adminProductSlice';
 import { toast } from 'sonner';
+import {
+	DndContext,
+	closestCenter,
+	PointerSensor,
+	useSensor,
+	useSensors,
+} from '@dnd-kit/core';
+import {
+	arrayMove,
+	SortableContext,
+	rectSortingStrategy,
+	useSortable,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 const AVAILABLE_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 const AVAILABLE_COLORS = [
 	'Red',
@@ -26,6 +40,26 @@ const CreateProductPage = () => {
 	const [uploading, setUploading] = useState(false);
 	const [customSize, setCustomSize] = useState('');
 	const [customColor, setCustomColor] = useState('');
+
+	const sensors = useSensors(
+		useSensor(PointerSensor, {
+			activationConstraint: {
+				distance: 8,
+			},
+		})
+	);
+
+	const handleDragEnd = (event) => {
+		const { active, over } = event;
+		if (active && over && active.id !== over.id) {
+			setProductData((prev) => {
+				const oldIndex = prev.images.findIndex((img) => img.url === active.id);
+				const newIndex = prev.images.findIndex((img) => img.url === over.id);
+				const newImages = arrayMove(prev.images, oldIndex, newIndex);
+				return { ...prev, images: newImages };
+			});
+		}
+	};
 
 	const [productData, setProductData] = useState({
 		name: '',
@@ -139,11 +173,17 @@ const CreateProductPage = () => {
 		}
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		if (['Men', 'Women', 'Unisex'].includes(productData.gender)) {
-			dispatch(createProduct(productData));
-			navigate('/admin/products');
+			try {
+				await dispatch(createProduct(productData)).unwrap();
+				toast.success('Product created successfully!');
+				navigate('/admin/products');
+			} catch (err) {
+				console.error(err);
+				toast.error(err || 'Failed to create product');
+			}
 		} else {
 			toast.error('Gender invalid');
 		}
@@ -191,6 +231,7 @@ const CreateProductPage = () => {
 						value={productData.price}
 						onChange={handleChange}
 						className='w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-md p-2'
+						required
 					/>
 				</div>
 
@@ -215,6 +256,7 @@ const CreateProductPage = () => {
 						value={productData.countInStock}
 						onChange={handleChange}
 						className='w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-md p-2'
+						required
 					/>
 				</div>
 
@@ -227,6 +269,7 @@ const CreateProductPage = () => {
 						value={productData.sku}
 						onChange={handleChange}
 						className='w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-md p-2'
+						required
 					/>
 				</div>
 
@@ -239,6 +282,7 @@ const CreateProductPage = () => {
 						value={productData.category}
 						onChange={handleChange}
 						className='w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-md p-2'
+						required
 					/>
 				</div>
 
@@ -508,38 +552,35 @@ const CreateProductPage = () => {
 						accept='image/*'
 					/>
 					{uploading && <p className='text-blue-500'>Uploading images...</p>}
-					<div className='flex flex-wrap gap-4 mt-4'>
-						{productData.images.map((image, index) => (
-							<div key={index} className='relative group'>
-								<img
-									src={image.url}
-									alt={image.altText || 'Product Image'}
-									className='w-20 h-20 object-cover rounded-md shadow-md'
-								/>
-								<button
-									type='button'
-									onClick={() => {
-										setProductData((prev) => ({
-											...prev,
-											images: prev.images.filter((_, i) => i !== index),
-										}));
-									}}
-									className='absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity'>
-									<svg
-										xmlns='http://www.w3.org/2000/svg'
-										className='h-4 w-4'
-										viewBox='0 0 20 20'
-										fill='currentColor'>
-										<path
-											fillRule='evenodd'
-											d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
-											clipRule='evenodd'
-										/>
-									</svg>
-								</button>
+					<p className='text-xs text-gray-500 dark:text-gray-400 mt-2 mb-4'>
+						Kéo thả các hình ảnh để sắp xếp thứ tự hiển thị (Ảnh đầu tiên sẽ là ảnh chính).
+					</p>
+					<DndContext
+						sensors={sensors}
+						collisionDetection={closestCenter}
+						onDragEnd={handleDragEnd}
+					>
+						<SortableContext
+							items={productData.images.map((img) => img.url)}
+							strategy={rectSortingStrategy}
+						>
+							<div className='flex flex-wrap gap-4 mt-4'>
+								{productData.images.map((image, index) => (
+									<SortableImageItem
+										key={image.url}
+										image={image}
+										index={index}
+										onRemove={(idx) => {
+											setProductData((prev) => ({
+												...prev,
+												images: prev.images.filter((_, i) => i !== idx),
+											}));
+										}}
+									/>
+								))}
 							</div>
-						))}
-					</div>
+						</SortableContext>
+					</DndContext>
 				</div>
 				<button
 					type='submit'
@@ -550,4 +591,64 @@ const CreateProductPage = () => {
 		</div>
 	);
 };
+
+const SortableImageItem = ({ image, index, onRemove }) => {
+	const {
+		attributes,
+		listeners,
+		setNodeRef,
+		transform,
+		transition,
+		isDragging,
+	} = useSortable({ id: image.url });
+
+	const style = {
+		transform: CSS.Transform.toString(transform),
+		transition,
+		zIndex: isDragging ? 10 : 1,
+		opacity: isDragging ? 0.5 : 1,
+	};
+
+	return (
+		<div
+			ref={setNodeRef}
+			style={style}
+			className={`relative group border border-gray-200 dark:border-gray-700 rounded-md p-1 bg-white dark:bg-gray-800 ${
+				isDragging ? 'shadow-lg border-blue-500 ring-2 ring-blue-500/20 scale-105 z-50' : ''
+			}`}
+		>
+			<div {...attributes} {...listeners} className='cursor-grab active:cursor-grabbing'>
+				<img
+					src={image.url}
+					alt={image.altText || 'Product Image'}
+					className='w-20 h-20 object-cover rounded-md shadow-md pointer-events-none select-none'
+				/>
+				{index === 0 && (
+					<span className='absolute bottom-1.5 left-1.5 bg-blue-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm'>
+						Primary
+					</span>
+				)}
+			</div>
+			<button
+				type='button'
+				onClick={() => onRemove(index)}
+				className='absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer shadow-sm z-20 hover:scale-110'
+			>
+				<svg
+					xmlns='http://www.w3.org/2000/svg'
+					className='h-4.5 w-4.5'
+					viewBox='0 0 20 20'
+					fill='currentColor'
+				>
+					<path
+						fillRule='evenodd'
+						d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
+						clipRule='evenodd'
+					/>
+				</svg>
+			</button>
+		</div>
+	);
+};
+
 export default CreateProductPage;

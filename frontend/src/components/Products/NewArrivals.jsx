@@ -87,21 +87,19 @@ const NewArrivals = () => {
 					<button
 						onClick={() => scroll('left')}
 						disabled={!canScrollLeft}
-						className={`p-2 rounded border dark:border-gray-600 ${
-							canScrollLeft ?
-								'bg-white text-black dark:bg-gray-700 dark:text-white'
-							:	'bg-gray-200 text-gray-400 dark:bg-gray-800 dark:text-gray-600 cursor-not-allowed'
-						}`}>
+						className={`p-2 rounded border dark:border-gray-600 ${canScrollLeft ?
+							'bg-white text-black dark:bg-gray-700 dark:text-white'
+							: 'bg-gray-200 text-gray-400 dark:bg-gray-800 dark:text-gray-600 cursor-not-allowed'
+							}`}>
 						<FiChevronLeft className='text-2xl' />
 					</button>
 					<button
 						onClick={() => scroll('right')}
 						disabled={!canScrollRight}
-						className={`p-2 rounded border dark:border-gray-600 ${
-							canScrollRight ?
-								'bg-white text-black dark:bg-gray-700 dark:text-white'
-							:	'bg-gray-200 text-gray-400 dark:bg-gray-800 dark:text-gray-600 cursor-not-allowed'
-						}`}>
+						className={`p-2 rounded border dark:border-gray-600 ${canScrollRight ?
+							'bg-white text-black dark:bg-gray-700 dark:text-white'
+							: 'bg-gray-200 text-gray-400 dark:bg-gray-800 dark:text-gray-600 cursor-not-allowed'
+							}`}>
 						<FiChevronRight className='text-2xl' />
 					</button>
 				</div>
@@ -114,9 +112,8 @@ const NewArrivals = () => {
 				onMouseMove={handleMouseMove}
 				onMouseUp={handleMouseUpOrLeave}
 				onMouseLeave={handleMouseUpOrLeave}
-				className={`container mx-auto overflow-x-scroll flex space-x-6 relative ${
-					isDragging ? 'cursor-grabbing' : 'cursor-grab'
-				}`}>
+				className={`container mx-auto overflow-x-scroll flex space-x-6 relative ${isDragging ? 'cursor-grabbing' : 'cursor-grab'
+					}`}>
 				{newArrivals.map((product) => (
 					<div
 						className='min-w-full sm:min-w-[50%] lg:min-w-[30%] relative'
@@ -126,12 +123,14 @@ const NewArrivals = () => {
 							alt={product.images[0]?.altText || product.name}
 							className='w-full h '
 							draggable='false'
+							width='200'
+							height='200'
 						/>
 						<div className='absolute bottom-0 left-0 right-0 bg-black/30 dark:bg-black/50 backdrop-blur-sm text-white p-4 rounded-b-lg transition-colors duration-300'>
 							<Link to={`product/${product._id}`} className='block'>
 								<h4 className='font-medium text-white'>{product.name}</h4>
 								<p className='mt-1 text-gray-200'>
-									{product.price.toLocaleString()}₫
+									${product.price.toLocaleString()}
 								</p>
 							</Link>
 						</div>

@@ -4,49 +4,73 @@ import axios from 'axios';
 // Async thunk to fetch admin products
 export const fetchAdminProducts = createAsyncThunk(
 	'adminProducts/fetchAdminProducts',
-	async () => {
-		const response = await axios.get(
-			`${import.meta.env.VITE_BACKEND_URL}/api/admin/products`,
-			{
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem('userToken')}`,
-				},
-			}
-		);
-		return response.data;
+	async (_, { rejectWithValue }) => {
+		try {
+			const response = await axios.get(
+				`${import.meta.env.VITE_BACKEND_URL}/api/admin/products`,
+				{
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem('userToken')}`,
+					},
+				}
+			);
+			return response.data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data
+					? error.response.data
+					: error.message
+			);
+		}
 	}
 );
 
 // Async thunk to create a new product
 export const createProduct = createAsyncThunk(
 	'adminProducts/createProduct',
-	async (productData) => {
-		const response = await axios.post(
-			`${import.meta.env.VITE_BACKEND_URL}/api/products`,
-			productData,
-			{
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem('userToken')}`,
-				},
-			}
-		);
-		return response.data;
+	async (productData, { rejectWithValue }) => {
+		try {
+			const response = await axios.post(
+				`${import.meta.env.VITE_BACKEND_URL}/api/products`,
+				productData,
+				{
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem('userToken')}`,
+					},
+				}
+			);
+			return response.data;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data
+					? error.response.data
+					: error.message
+			);
+		}
 	}
 );
 
 // Async thunk to delete product
 export const deleteProduct = createAsyncThunk(
 	'adminProducts/deleteProduct',
-	async (id) => {
-		await axios.delete(
-			`${import.meta.env.VITE_BACKEND_URL}/api/products/${id}`,
-			{
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem('userToken')}`,
-				},
-			}
-		);
-		return id;
+	async (id, { rejectWithValue }) => {
+		try {
+			await axios.delete(
+				`${import.meta.env.VITE_BACKEND_URL}/api/products/${id}`,
+				{
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem('userToken')}`,
+					},
+				}
+			);
+			return id;
+		} catch (error) {
+			return rejectWithValue(
+				error.response && error.response.data
+					? error.response.data
+					: error.message
+			);
+		}
 	}
 );
 
@@ -79,6 +103,10 @@ const adminProductsSlice = createSlice({
 			.addCase(createProduct.fulfilled, (state, action) => {
 				state.loading = false;
 				state.products.push(action.payload);
+			})
+			.addCase(createProduct.rejected, (state, action) => {
+				state.loading = false;
+				state.error = action.payload || action.error.message;
 			})
 			.addCase(deleteProduct.fulfilled, (state, action) => {
 				state.loading = false;

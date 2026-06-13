@@ -54,7 +54,7 @@ const Home = () => {
 				<ProductDetails productId={bestSellerProduct._id} />
 			)}
 
-			<div className='container mx-auto'>
+			<div className='container mx-auto space-y-4 py-10'>
 				<h2 className='text-3xl text-center font-bold dark:text-white'>
 					Top Wears for Women
 				</h2>
@@ -72,7 +72,7 @@ const Home = () => {
 							</div>
 						))}
 					</div>
-				:	<ProductGrid products={products} error={error} />}
+					: <ProductGrid products={products} error={error} />}
 			</div>
 
 			<FeaturedCollection />
