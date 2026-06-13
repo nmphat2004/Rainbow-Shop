@@ -8,6 +8,7 @@ const subscriberRoutes = require('./subscriber.routes')
 const adminRoutes = require('./admin.routes')
 const productAdminRoutes = require('./productAdmin.routes')
 const adminOrderRoutes = require('./adminOrder.routes')
+const chatRoutes = require('./chat.routes')
 
 module.exports.routes = (app) => {
   app.use('/api/users', userRoutes)
@@ -20,4 +21,5 @@ module.exports.routes = (app) => {
   app.use('/api/admin', adminRoutes)
   app.use('/api/admin/products', productAdminRoutes)
   app.use('/api/admin/orders', adminOrderRoutes)
+  app.use('/api/chat', chatRoutes)
 }

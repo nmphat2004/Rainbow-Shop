@@ -5,7 +5,6 @@ const dotenv = require('dotenv');
 const Product = require('./models/Product');
 const User = require('./models/user');
 const Cart = require('./models/Cart');
-const products = require('./data/products');
 
 dotenv.config();
 
@@ -22,27 +21,14 @@ const seedData = async () => {
 		await Cart.deleteMany();
 
 		// Create a default admin User
-		const createUser = await User.create({
+		await User.create({
 			name: 'Admin',
 			email: 'admin@example.com',
 			password: '123456',
 			role: 'admin',
 		});
 
-		// Assign the default user ID to each product
-		const userID = createUser._id;
-
-		const sampleProducts = products.map((product) => {
-			return {
-				...product,
-				user: userID,
-			};
-		});
-
-		// Insert the products into the database
-		await Product.insertMany(sampleProducts);
-
-		console.log('Product data seeded successfully');
+		console.log('Seeded successfully');
 		process.exit();
 	} catch (error) {
 		console.error('Error seeding the data', error);

@@ -8,6 +8,20 @@ import {
 import axios from 'axios';
 import { toast } from 'sonner';
 
+const AVAILABLE_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+const AVAILABLE_COLORS = [
+	'Red',
+	'Blue',
+	'Black',
+	'Green',
+	'Yellow',
+	'Gray',
+	'White',
+	'Pink',
+	'Beige',
+	'Navy',
+];
+
 const EditProductPage = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -17,6 +31,8 @@ const EditProductPage = () => {
 	);
 
 	const [uploading, setUploading] = useState(false);
+	const [customSize, setCustomSize] = useState('');
+	const [customColor, setCustomColor] = useState('');
 
 	const [productData, setProductData] = useState({
 		name: '',
@@ -41,8 +57,60 @@ const EditProductPage = () => {
 	}, [dispatch, id]);
 
 	useEffect(() => {
-		if (selectedProduct) setProductData(selectedProduct);
+		if (selectedProduct) {
+			setProductData({
+				...selectedProduct,
+				sizes: selectedProduct.sizes || [],
+				colors: selectedProduct.colors || [],
+			});
+		}
 	}, [selectedProduct]);
+
+	const handleSizeToggle = (size) => {
+		setProductData((prev) => {
+			const sizes = prev.sizes.includes(size)
+				? prev.sizes.filter((s) => s !== size)
+				: [...prev.sizes, size];
+			return { ...prev, sizes };
+		});
+	};
+
+	const handleAddCustomSize = (e) => {
+		e.preventDefault();
+		if (customSize.trim() !== '') {
+			const sizeToAdd = customSize.trim();
+			if (!productData.sizes.includes(sizeToAdd)) {
+				setProductData((prev) => ({
+					...prev,
+					sizes: [...prev.sizes, sizeToAdd],
+				}));
+			}
+			setCustomSize('');
+		}
+	};
+
+	const handleColorToggle = (color) => {
+		setProductData((prev) => {
+			const colors = prev.colors.includes(color)
+				? prev.colors.filter((c) => c !== color)
+				: [...prev.colors, color];
+			return { ...prev, colors };
+		});
+	};
+
+	const handleAddCustomColor = (e) => {
+		e.preventDefault();
+		if (customColor.trim() !== '') {
+			const colorToAdd = customColor.trim();
+			if (!productData.colors.includes(colorToAdd)) {
+				setProductData((prev) => ({
+					...prev,
+					colors: [...prev.colors, colorToAdd],
+				}));
+			}
+			setCustomColor('');
+		}
+	};
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -188,40 +256,148 @@ const EditProductPage = () => {
 
 				{/* Sizes */}
 				<div className='mb-6'>
-					<label className='block font-semibold mb-2 dark:text-gray-300'>
-						Size (comma-separated)
-					</label>
-					<input
-						type='text'
-						name='sizes'
-						value={productData.sizes?.join(',')}
-						onChange={(e) =>
-							setProductData({
-								...productData,
-								sizes: e.target.value.split(',').map((size) => size.trim()),
-							})
-						}
-						className='w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-md p-2'
-					/>
+					<label className='block font-semibold mb-2 dark:text-gray-300'>Sizes</label>
+					<div className='flex flex-wrap gap-2 mb-3'>
+						{AVAILABLE_SIZES.map((size) => {
+							const isSelected = productData.sizes?.includes(size);
+							return (
+								<button
+									key={size}
+									type='button'
+									onClick={() => handleSizeToggle(size)}
+									className={`px-3 py-1.5 rounded-md border text-sm font-medium transition-all ${
+										isSelected
+											? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+											: 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600'
+									}`}
+								>
+									{size}
+								</button>
+							);
+						})}
+					</div>
+
+					<div className='flex gap-2 mb-3 max-w-sm'>
+						<input
+							type='text'
+							placeholder='Add custom size (e.g. 38, 39, XL)'
+							value={customSize}
+							onChange={(e) => setCustomSize(e.target.value)}
+							className='flex-1 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-md p-2 text-sm'
+						/>
+						<button
+							type='button'
+							onClick={handleAddCustomSize}
+							className='px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-md transition'
+						>
+							Add
+						</button>
+					</div>
+
+					{productData.sizes?.length > 0 && (
+						<div className='flex flex-wrap gap-2 mt-2 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-md'>
+							<span className='text-xs text-gray-500 dark:text-gray-400 w-full mb-1'>Selected:</span>
+							{productData.sizes.map((size) => (
+								<span
+									key={size}
+									className='inline-flex items-center gap-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 text-xs font-semibold px-2.5 py-1 rounded-full'
+								>
+									{size}
+									<button
+										type='button'
+										onClick={() => handleSizeToggle(size)}
+										className='text-blue-500 hover:text-blue-700 dark:hover:text-blue-300 font-bold focus:outline-none'
+									>
+										&times;
+									</button>
+								</span>
+							))}
+						</div>
+					)}
 				</div>
 
 				{/* Colors */}
 				<div className='mb-6'>
-					<label className='block font-semibold mb-2 dark:text-gray-300'>
-						Colors (comma-separated)
-					</label>
-					<input
-						type='text'
-						name='colors'
-						value={productData.colors?.join(',')}
-						onChange={(e) =>
-							setProductData({
-								...productData,
-								colors: e.target.value.split(',').map((color) => color.trim()),
-							})
-						}
-						className='w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-md p-2'
-					/>
+					<label className='block font-semibold mb-2 dark:text-gray-300'>Colors</label>
+					<div className='flex flex-wrap gap-3 mb-3'>
+						{AVAILABLE_COLORS.map((color) => {
+							const isSelected = productData.colors?.includes(color);
+							return (
+								<button
+									key={color}
+									type='button'
+									onClick={() => handleColorToggle(color)}
+									title={color}
+									className={`w-8 h-8 rounded-full border-2 transition-all relative flex items-center justify-center ${
+										isSelected
+											? 'border-blue-600 ring-2 ring-blue-600/30 scale-110 shadow-md'
+											: 'border-gray-300 dark:border-gray-600 hover:scale-105'
+									}`}
+									style={{ backgroundColor: color.toLowerCase() }}
+								>
+									{isSelected && (
+										<svg
+											className={`w-4 h-4 ${
+												['White', 'Yellow'].includes(color) ? 'text-black' : 'text-white'
+											}`}
+											fill='none'
+											stroke='currentColor'
+											viewBox='0 0 24 24'
+										>
+											<path
+												strokeLinecap='round'
+												strokeLinejoin='round'
+												strokeWidth='3'
+												d='M5 13l4 4L19 7'
+											/>
+										</svg>
+									)}
+								</button>
+							);
+						})}
+					</div>
+
+					<div className='flex gap-2 mb-3 max-w-sm'>
+						<input
+							type='text'
+							placeholder='Add custom color (e.g. Teal, Olive)'
+							value={customColor}
+							onChange={(e) => setCustomColor(e.target.value)}
+							className='flex-1 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-md p-2 text-sm'
+						/>
+						<button
+							type='button'
+							onClick={handleAddCustomColor}
+							className='px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-md transition'
+						>
+							Add
+						</button>
+					</div>
+
+					{productData.colors?.length > 0 && (
+						<div className='flex flex-wrap gap-2 mt-2 p-2 bg-gray-50 dark:bg-gray-700/50 rounded-md'>
+							<span className='text-xs text-gray-500 dark:text-gray-400 w-full mb-1'>Selected:</span>
+							{productData.colors.map((color) => (
+								<span
+									key={color}
+									className='inline-flex items-center gap-1.5 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 text-xs font-semibold px-2.5 py-1 rounded-full border border-gray-300 dark:border-gray-600'
+								>
+									<span
+										className='w-3 h-3 rounded-full border border-gray-300 dark:border-gray-600'
+										style={{ backgroundColor: color.toLowerCase() }}
+									/>
+									{color}
+									<button
+										type='button'
+										onClick={() => handleColorToggle(color)}
+										className='text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 font-bold focus:outline-none'
+									>
+										&times;
+									</button>
+								</span>
+							))}
+						</div>
+					)}
 				</div>
 
 				{/* Collections */}
@@ -251,13 +427,18 @@ const EditProductPage = () => {
 				{/* Gender */}
 				<div className='mb-6'>
 					<label className='block font-semibold mb-2 dark:text-gray-300'>Gender</label>
-					<input
-						type='text'
+					<select
 						name='gender'
 						value={productData.gender}
 						onChange={handleChange}
 						className='w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-md p-2'
-					/>
+						required
+					>
+						<option value=''>Select Gender</option>
+						<option value='Men'>Men</option>
+						<option value='Women'>Women</option>
+						<option value='Unisex'>Unisex</option>
+					</select>
 				</div>
 
 				{/* Image Upload */}
