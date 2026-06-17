@@ -39,3 +39,89 @@ body,
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Quill Editor Dark Mode Override Styles */
+.dark .ql-toolbar {
+  background-color: #1f2937 !important;
+  border-color: #374151 !important;
+}
+.dark .ql-container {
+  background-color: #1f2937 !important;
+  border-color: #374151 !important;
+  color: #e5e7eb !important;
+}
+.dark .ql-stroke {
+  stroke: #e5e7eb !important;
+}
+.dark .ql-fill {
+  fill: #e5e7eb !important;
+}
+.dark .ql-picker {
+  color: #e5e7eb !important;
+}
+.dark .ql-picker-options {
+  background-color: #1f2937 !important;
+  border-color: #374151 !important;
+}
+
+/* Custom typography styles to restore lists and headings within product descriptions (Quill compatible) */
+.prose ol,
+.prose ul {
+  padding-left: 0 !important;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  list-style-type: none !important;
+  counter-reset: list-0;
+}
+
+.prose li {
+  position: relative;
+  padding-left: 1.5em;
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+  counter-increment: list-0;
+}
+
+.prose li::before {
+  content: counter(list-0, decimal) ". ";
+  position: absolute;
+  left: 0;
+  width: 1.2em;
+  text-align: right;
+  color: inherit;
+}
+
+.prose li[data-list="bullet"] {
+  counter-reset: list-0;
+}
+
+.prose ul li::before,
+.prose li[data-list="bullet"]::before {
+  content: "\2022" !important;
+  font-size: 1.2em;
+  line-height: 1;
+  top: -0.1em;
+  text-align: center;
+}
+
+.prose ul li {
+  counter-reset: list-0;
+}
+
+.prose h1, .prose h2, .prose h3 {
+  font-weight: bold;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
+.prose h1 {
+  font-size: 1.5em;
+}
+
+.prose h2 {
+  font-size: 1.25em;
+}
+
+.prose h3 {
+  font-size: 1.125em;
+}

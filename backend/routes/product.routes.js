@@ -34,6 +34,11 @@ router.get('/best-seller', productController.getBestSellerProduct);
 // @access Public
 router.get('/new-arrivals', productController.getNewArrivalsProducts);
 
+// @route GET /api/products/distinct-filters
+// @desc Get all unique filters (brands, categories, etc.)
+// @access Public
+router.get('/distinct-filters', productController.getDistinctFilters);
+
 // @route GET /api/products/:id
 // @desc Get a single product by ID
 // @access Public

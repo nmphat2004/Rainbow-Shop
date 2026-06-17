@@ -157,10 +157,12 @@ const getAllProducts = async (req, res) => {
 			query.collections = collection;
 		if (category && category.toLocaleLowerCase() !== 'all')
 			query.category = category;
-		if (material)
+		if (material) {
+			const materialRegexes = material.split(',').map(m => new RegExp(m.trim(), 'i'));
 			query.material = {
-				$in: material.split(','),
+				$in: materialRegexes,
 			};
+		}
 
 		if (brand)
 			query.brand = {
@@ -314,6 +316,27 @@ const getNewArrivalsProducts = async (req, res) => {
 	}
 };
 
+const getDistinctFilters = async (req, res) => {
+	try {
+		const brands = await Product.distinct('brand');
+		const categories = await Product.distinct('category');
+		const colors = await Product.distinct('colors');
+		const sizes = await Product.distinct('sizes');
+		const materials = await Product.distinct('material');
+
+		res.json({
+			brands: brands.filter(Boolean),
+			categories: categories.filter(Boolean),
+			colors: colors.filter(Boolean),
+			sizes: sizes.filter(Boolean),
+			materials: materials.filter(Boolean),
+		});
+	} catch (error) {
+		console.error('Error fetching distinct filters:', error);
+		res.status(500).send('Server Error');
+	}
+};
+
 module.exports = {
 	createProduct,
 	updateProduct,
@@ -323,4 +346,5 @@ module.exports = {
 	getSimilarProducts,
 	getBestSellerProduct,
 	getNewArrivalsProducts,
+	getDistinctFilters,
 };

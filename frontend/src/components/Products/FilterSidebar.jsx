@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import axios from 'axios';
 
 const FilterSidebar = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -16,7 +17,7 @@ const FilterSidebar = () => {
 	});
 	const [priceRange, setPriceRange] = useState([0, 100]);
 	const categories = ['Top Wear', 'Bottom Wear'];
-	const colors = [
+	const [colors, setColors] = useState([
 		'Red',
 		'Blue',
 		'Black',
@@ -27,26 +28,65 @@ const FilterSidebar = () => {
 		'Pink',
 		'Beige',
 		'Navy',
-	];
-	const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+	]);
+	const [sizes, setSizes] = useState(['XS', 'S', 'M', 'L', 'XL', 'XXL']);
 	const materials = [
 		'Cotton',
-		'Wool',
-		'Denim',
 		'Polyester',
+		'Denim',
+		'Wool',
 		'Silk',
 		'Linen',
-		'Viscose',
 		'Fleece',
 	];
-	const brands = [
+	const [brands, setBrands] = useState([
 		'Urban Threads',
 		'Modern Fit',
 		'Street Style',
 		'Beach Breeze',
 		'Fashionista',
 		'ChicStyle',
-	];
+	]);
+
+	const handleReset = () => {
+		const defaultFilters = {
+			category: '',
+			gender: '',
+			color: '',
+			size: [],
+			material: [],
+			brand: [],
+			minPrice: 0,
+			maxPrice: 100,
+		};
+		setFilters(defaultFilters);
+		setPriceRange([0, 100]);
+		navigate('?');
+	};
+
+	useEffect(() => {
+		const fetchFilters = async () => {
+			try {
+				const response = await axios.get(
+					`${import.meta.env.VITE_BACKEND_URL}/api/products/distinct-filters`
+				);
+				if (response.data) {
+					if (response.data.brands && response.data.brands.length > 0) {
+						setBrands(response.data.brands);
+					}
+					if (response.data.colors && response.data.colors.length > 0) {
+						setColors(response.data.colors);
+					}
+					if (response.data.sizes && response.data.sizes.length > 0) {
+						setSizes(response.data.sizes);
+					}
+				}
+			} catch (error) {
+				console.error('Error fetching distinct filters:', error);
+			}
+		};
+		fetchFilters();
+	}, []);
 
 	const genders = ['Men', 'Women', 'Unisex'];
 
@@ -109,7 +149,15 @@ const FilterSidebar = () => {
 
 	return (
 		<div className='p-4'>
-			<h3 className='text-xl font-medium text-gray-800 dark:text-gray-200 mb-4'></h3>
+			<div className='flex justify-between items-center mb-6'>
+				<h3 className='text-xl font-bold text-gray-800 dark:text-gray-205'>Filters</h3>
+				<button
+					onClick={handleReset}
+					className='text-xs font-semibold text-red-500 hover:text-red-650 cursor-pointer hover:underline transition-colors'
+				>
+					Reset All
+				</button>
+			</div>
 
 			{/* Category Filter */}
 			<div className='mb-6'>

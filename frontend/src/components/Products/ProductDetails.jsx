@@ -135,9 +135,10 @@ const ProductDetails = ({ productId }) => {
 							<p className='text-xl text-gray-500 dark:text-gray-300 mb-2'>
 								${selectedProduct.price.toLocaleString()}
 							</p>
-							<p className='text-gray-600 dark:text-gray-400 mb-4'>
-								{selectedProduct.description}
-							</p>
+							<div 
+								className='text-gray-600 dark:text-gray-400 mb-4 prose dark:prose-invert text-sm leading-relaxed'
+								dangerouslySetInnerHTML={{ __html: selectedProduct.description }}
+							/>
 							<div className='mb-4'>
 								<p className='text-gray-700 dark:text-gray-300'>Color:</p>
 								<div className='flex gap-2 mt-2'>

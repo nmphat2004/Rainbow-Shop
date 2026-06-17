@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { createProduct } from '../../redux/slices/adminProductSlice';
 import { toast } from 'sonner';
+import Quill from 'quill';
+import 'quill/dist/quill.snow.css';
 import {
 	DndContext,
 	closestCenter,
@@ -40,6 +42,76 @@ const CreateProductPage = () => {
 	const [uploading, setUploading] = useState(false);
 	const [customSize, setCustomSize] = useState('');
 	const [customColor, setCustomColor] = useState('');
+	const [productData, setProductData] = useState({
+		name: '',
+		description: '',
+		price: 0,
+		discountPrice: 0,
+		countInStock: 0,
+		sku: '',
+		category: '',
+		brand: '',
+		sizes: [],
+		colors: [],
+		collections: '',
+		material: '',
+		gender: '',
+		images: [],
+		isFeatured: false,
+		isPublished: true,
+	});
+
+	const quillRef = useRef(null);
+	const quillInstance = useRef(null);
+	const latestDescriptionRef = useRef('');
+
+	useEffect(() => {
+		latestDescriptionRef.current = productData.description;
+	}, [productData.description]);
+
+	useEffect(() => {
+		const currentRef = quillRef.current;
+
+		if (!loading && currentRef && !quillInstance.current) {
+			quillInstance.current = new Quill(currentRef, {
+				theme: 'snow',
+				modules: {
+					toolbar: [
+						[{ 'header': [1, 2, false] }],
+						['bold', 'italic', 'underline', 'strike'],
+						[{ 'list': 'ordered' }, { 'list': 'bullet' }],
+						['clean']
+					]
+				}
+			});
+
+			quillInstance.current.on('text-change', () => {
+				const html = quillInstance.current.root.innerHTML;
+				setProductData((prev) => ({
+					...prev,
+					description: html === '<p><br></p>' ? '' : html
+				}));
+			});
+
+			if (latestDescriptionRef.current) {
+				quillInstance.current.root.innerHTML = latestDescriptionRef.current;
+			}
+		}
+
+		return () => {
+			if (quillInstance.current) {
+				quillInstance.current = null;
+			}
+			if (currentRef) {
+				currentRef.className = 'dark:text-gray-200';
+				currentRef.innerHTML = '';
+				if (currentRef.parentNode) {
+					const toolbars = currentRef.parentNode.querySelectorAll('.ql-toolbar');
+					toolbars.forEach(tb => tb.remove());
+				}
+			}
+		};
+	}, [loading]);
 
 	const sensors = useSensors(
 		useSensor(PointerSensor, {
@@ -60,25 +132,6 @@ const CreateProductPage = () => {
 			});
 		}
 	};
-
-	const [productData, setProductData] = useState({
-		name: '',
-		description: '',
-		price: 0,
-		discountPrice: 0,
-		countInStock: 0,
-		sku: '',
-		category: '',
-		brand: '',
-		sizes: [],
-		colors: [],
-		collections: '',
-		material: '',
-		gender: '',
-		images: [],
-		isFeatured: false,
-		isPublished: true,
-	});
 
 	const handleSizeToggle = (size) => {
 		setProductData((prev) => {
@@ -175,6 +228,10 @@ const CreateProductPage = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		if (!productData.description || productData.description.trim() === '') {
+			toast.error('Product description is required');
+			return;
+		}
 		if (['Men', 'Women', 'Unisex'].includes(productData.gender)) {
 			try {
 				await dispatch(createProduct(productData)).unwrap();
@@ -212,14 +269,9 @@ const CreateProductPage = () => {
 				{/* Description */}
 				<div className='mb-6'>
 					<label className='block font-semibold mb-2 dark:text-gray-300'>Description</label>
-					<textarea
-						name='description'
-						value={productData.description}
-						onChange={handleChange}
-						className='w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-md p-2'
-						rows={4}
-						required
-					/>
+					<div className="border border-gray-300 dark:border-gray-600 rounded-md overflow-hidden bg-white dark:bg-gray-700">
+						<div ref={quillRef} style={{ height: '200px' }} className="dark:text-gray-200" />
+					</div>
 				</div>
 
 				{/* Price */}
