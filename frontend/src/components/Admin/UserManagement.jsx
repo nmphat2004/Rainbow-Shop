@@ -92,7 +92,6 @@ const UserManagement = () => {
 			<h2 className='text-2xl font-bold mb-4 dark:text-white'>
 				User Management
 			</h2>
-			{loading && <p className='dark:text-gray-400'>Loading...</p>}
 			{error && <p className='dark:text-red-400'>Error: {error}</p>}
 			{/* Add New User Form */}
 			<div className='p-6 bg-white dark:bg-gray-800 shadow-md rounded-lg mb-6 transition-colors duration-300'>
