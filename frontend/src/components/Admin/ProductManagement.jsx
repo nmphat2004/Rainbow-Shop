@@ -26,67 +26,65 @@ const ProductManagement = () => {
 	if (error) return <p className='dark:text-red-400'>Error: {error}</p>;
 
 	return (
-		<div className='max-w-7xl mx-auto p-6'>
-			<div className='flex items-center justify-between'>
-				<h2 className='text-2xl font-bold mb-6 dark:text-white'>
+		<div className='max-w-7xl mx-auto p-4 sm:p-6 lg:p-8'>
+			<div className='flex items-center justify-between mb-8'>
+				<h2 className='text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50'>
 					Product Management
 				</h2>
 				<Link
 					to={`/admin/products/create`}
-					className='bg-green-500 text-white px-2 py-1 rounded mr-2 hover:bg-green-600'>
-					+ Create
+					className='bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 px-4 py-2.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all active:scale-[0.98] cursor-pointer'>
+					Create Product
 				</Link>
 			</div>
-			<div className='overflow-x-auto bg-white dark:bg-gray-800 shadow-md sm:rounded-lg transition-colors duration-300'>
-				<table className='min-w-full text-left text-gray-500 dark:text-gray-400'>
-					<thead className='bg-gray-100 dark:bg-gray-700 text-xs uppercase text-gray-700 dark:text-gray-300'>
+
+			<div className='border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden bg-white dark:bg-zinc-900 shadow-sm'>
+				<table className='min-w-full text-left text-zinc-500 dark:text-zinc-400'>
+					<thead className='bg-zinc-50 dark:bg-zinc-900/50 text-[11px] font-mono-brand uppercase tracking-widest text-zinc-500 dark:text-zinc-400 border-b border-zinc-200 dark:border-zinc-800'>
 						<tr>
-							<th className='px-3 py-4'>Name</th>
-							<th className='px-3 py-4'>Price</th>
-							<th className='px-3 py-4'>SKU</th>
-							<th className='px-3 py-4'>Actions</th>
+							<th className='px-6 py-4'>Product Details</th>
+							<th className='px-6 py-4'>Price</th>
+							<th className='px-6 py-4'>SKU</th>
+							<th className='px-6 py-4 text-right'>Actions</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody className='divide-y divide-zinc-200 dark:divide-zinc-800'>
 						{loading ?
 							Array.from({ length: 5 }).map((_, i) => (
-								<tr
-									key={i}
-									className='border-b border-gray-200 dark:border-gray-700'>
-									<td className='p-4'>
-										<Skeletion className='h-4 w-60' />
+								<tr key={i}>
+									<td className='px-6 py-4'>
+										<Skeletion className='h-4 w-1/3' />
 									</td>
-									<td className='p-4'>
-										<Skeletion className='h-4 w-3/4' />
-									</td>
-									<td className='p-4'>
-										<Skeletion className='h-4 w-3/4' />
-									</td>
-									<td className='p-4 flex space-x-2'>
-										<Skeletion className='h-4 w-12' />
+									<td className='px-6 py-4'>
 										<Skeletion className='h-4 w-16' />
+									</td>
+									<td className='px-6 py-4'>
+										<Skeletion className='h-4 w-24' />
+									</td>
+									<td className='px-6 py-4 text-right'>
+										<Skeletion className='h-4 w-24 ml-auto' />
 									</td>
 								</tr>
 							))
 						: products.length > 0 ?
-							products.map((product) => (
+							products.map((p) => (
 								<tr
-									key={product.id}
-									className='border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer transition-colors duration-200'>
-									<td className='p-4 font-medium text-gray-900 dark:text-gray-200 whitespace-nowrap'>
-										{product.name}
+									key={p.id || p._id}
+									className='hover:bg-zinc-50/50 dark:hover:bg-zinc-800/20 transition-colors duration-200'>
+									<td className='px-6 py-4 font-semibold text-zinc-900 dark:text-zinc-200 whitespace-nowrap text-sm'>
+										{p.name}
 									</td>
-									<td className='p-4 dark:text-gray-300'>${product.price}</td>
-									<td className='p-4 dark:text-gray-300'>{product.sku}</td>
-									<td className='p-4'>
+									<td className='px-6 py-4 dark:text-zinc-300 text-sm font-mono-brand'>${p.price}</td>
+									<td className='px-6 py-4 dark:text-zinc-300 text-sm font-mono-brand'>{p.sku || 'N/A'}</td>
+									<td className='px-6 py-4 text-right whitespace-nowrap text-sm'>
 										<Link
-											to={`/admin/products/${product._id}/edit`}
-											className='bg-yellow-500 text-white px-2 py-1 rounded mr-2 hover:bg-yellow-600'>
+											to={`/admin/products/${p._id}/edit`}
+											className='text-xs font-semibold uppercase tracking-wider text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors mr-4 hover:underline'>
 											Edit
 										</Link>
 										<button
-											onClick={() => handleDeleteProduct(product._id)}
-											className='bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600'>
+											onClick={() => handleDeleteProduct(p._id)}
+											className='text-xs font-semibold uppercase tracking-wider text-zinc-400 hover:text-rainbow-red transition-colors cursor-pointer hover:underline'>
 											Delete
 										</button>
 									</td>
@@ -95,8 +93,8 @@ const ProductManagement = () => {
 						:	<tr>
 								<td
 									colSpan={4}
-									className='p-4 text-center text-gray-500 dark:text-gray-400'>
-									No Products Found
+									className='px-6 py-8 text-center text-zinc-400 dark:text-zinc-500 text-sm'>
+									No products found.
 								</td>
 							</tr>
 						}

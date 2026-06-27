@@ -10,18 +10,21 @@ const NewArrivals = () => {
 	const [scrollLeft, setScrollLeft] = useState(false);
 	const [canScrollLeft, setCanScrollLeft] = useState(false);
 	const [canScrollRight, setCanScrollRight] = useState(true);
-
+	const [loading, setLoading] = useState(true);
 	const [newArrivals, setNewArrivals] = useState([]);
 
 	useEffect(() => {
 		const fetchNewArrivals = async () => {
 			try {
+				setLoading(true);
 				const response = await axios.get(
 					`${import.meta.env.VITE_BACKEND_URL}/api/products/new-arrivals`,
 				);
 				setNewArrivals(response.data);
 			} catch (error) {
 				console.error(error);
+			} finally {
+				setLoading(false);
 			}
 		};
 		fetchNewArrivals();
@@ -72,36 +75,39 @@ const NewArrivals = () => {
 	}, [newArrivals]);
 
 	return (
-		<section className='py-16 px-4 lg:px-0'>
-			<div className='container mx-auto text-center mb-10 relative'>
-				<h2 className='text-3xl font-bold mb-4 dark:text-white'>
-					Explore New Arrivals
-				</h2>
-				<p className='text-lg text-gray-600 dark:text-gray-400 mb-8'>
-					Discover the latest styles straight off the runway, freshly added to
-					keep your wardrobe on the cutting edge of fashion.
-				</p>
+		<section className='py-20 px-4 lg:px-6'>
+			<div className='container mx-auto mb-8'>
+				<div className='flex items-end justify-between'>
+					<div>
+						<h2 className='text-3xl md:text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50'>
+							New Arrivals
+						</h2>
+						<p className='text-zinc-500 dark:text-zinc-400 mt-2 text-base max-w-[50ch]'>
+							The latest styles, freshly added to keep your wardrobe current.
+						</p>
+					</div>
 
-				{/* Scroll Buttons */}
-				<div className='absolute right-0 bottom-[-30px] flex space-x-2'>
-					<button
-						onClick={() => scroll('left')}
-						disabled={!canScrollLeft}
-						className={`p-2 rounded border dark:border-gray-600 ${canScrollLeft ?
-							'bg-white text-black dark:bg-gray-700 dark:text-white'
-							: 'bg-gray-200 text-gray-400 dark:bg-gray-800 dark:text-gray-600 cursor-not-allowed'
-							}`}>
-						<FiChevronLeft className='text-2xl' />
-					</button>
-					<button
-						onClick={() => scroll('right')}
-						disabled={!canScrollRight}
-						className={`p-2 rounded border dark:border-gray-600 ${canScrollRight ?
-							'bg-white text-black dark:bg-gray-700 dark:text-white'
-							: 'bg-gray-200 text-gray-400 dark:bg-gray-800 dark:text-gray-600 cursor-not-allowed'
-							}`}>
-						<FiChevronRight className='text-2xl' />
-					</button>
+					{/* Scroll Buttons */}
+					<div className='hidden md:flex items-center space-x-2'>
+						<button
+							onClick={() => scroll('left')}
+							disabled={!canScrollLeft}
+							className={`p-2 rounded-lg border transition-all duration-200 ${canScrollLeft
+								? 'border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800'
+								: 'border-zinc-200 dark:border-zinc-800 text-zinc-300 dark:text-zinc-700 cursor-not-allowed'
+								}`}>
+							<FiChevronLeft className='text-xl' />
+						</button>
+						<button
+							onClick={() => scroll('right')}
+							disabled={!canScrollRight}
+							className={`p-2 rounded-lg border transition-all duration-200 ${canScrollRight
+								? 'border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800'
+								: 'border-zinc-200 dark:border-zinc-800 text-zinc-300 dark:text-zinc-700 cursor-not-allowed'
+								}`}>
+							<FiChevronRight className='text-xl' />
+						</button>
+					</div>
 				</div>
 			</div>
 
@@ -112,30 +118,39 @@ const NewArrivals = () => {
 				onMouseMove={handleMouseMove}
 				onMouseUp={handleMouseUpOrLeave}
 				onMouseLeave={handleMouseUpOrLeave}
-				className={`container mx-auto overflow-x-scroll flex space-x-6 relative ${isDragging ? 'cursor-grabbing' : 'cursor-grab'
+				className={`container mx-auto overflow-x-auto no-scrollbar flex space-x-5 ${isDragging ? 'cursor-grabbing' : 'cursor-grab'
 					}`}>
-				{newArrivals.map((product) => (
-					<div
-						className='min-w-full sm:min-w-[50%] lg:min-w-[30%] relative'
-						key={product._id}>
-						<img
-							src={product.images[0]?.url}
-							alt={product.images[0]?.altText || product.name}
-							className='w-full h '
-							draggable='false'
-							width='200'
-							height='200'
-						/>
-						<div className='absolute bottom-0 left-0 right-0 bg-black/30 dark:bg-black/50 backdrop-blur-sm text-white p-4 rounded-b-lg transition-colors duration-300'>
-							<Link to={`product/${product._id}`} className='block'>
-								<h4 className='font-medium text-white'>{product.name}</h4>
-								<p className='mt-1 text-gray-200'>
+				{loading
+					? Array.from({ length: 4 }).map((_, i) => (
+						<div className='min-w-[280px] sm:min-w-[300px] lg:min-w-[320px]' key={i}>
+							<div className='skeleton-shimmer rounded-xl w-full h-[380px] mb-3' />
+							<div className='skeleton-shimmer rounded-md w-3/4 h-4 mb-2' />
+							<div className='skeleton-shimmer rounded-md w-1/4 h-4' />
+						</div>
+					))
+					: newArrivals.map((product) => (
+						<div
+							className='min-w-[280px] sm:min-w-[300px] lg:min-w-[320px] group'
+							key={product._id}>
+							<Link to={`product/${product._id}`} className='block' draggable='false'>
+								<div className='overflow-hidden rounded-xl mb-3'>
+									<img
+										src={product.images[0]?.url}
+										alt={product.images[0]?.altText || product.name}
+										className='w-full h-[380px] object-cover transition-transform duration-500 ease-out group-hover:scale-[1.05]'
+										draggable='false'
+									/>
+								</div>
+								<h4 className='text-sm font-medium text-zinc-800 dark:text-zinc-200 truncate'>
+									{product.name}
+								</h4>
+								<p className='mt-1 font-mono-brand text-sm text-zinc-500 dark:text-zinc-400'>
 									${product.price.toLocaleString()}
 								</p>
 							</Link>
 						</div>
-					</div>
-				))}
+					))
+				}
 			</div>
 		</section>
 	);

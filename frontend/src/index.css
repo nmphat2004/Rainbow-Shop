@@ -1,22 +1,33 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 #root {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Outfit', sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
 }
 
 @theme {
-  --color-rainbow-red: #ea2e0e
+  --color-rainbow-red: #ea2e0e;
+  --color-surface: #fafafa;
+  --color-surface-dark: #09090b;
+  --color-surface-elevated: #ffffff;
+  --color-surface-elevated-dark: #18181b;
+  --color-border: #e4e4e7;
+  --color-border-dark: #27272a;
+  --color-text-primary: #09090b;
+  --color-text-primary-dark: #fafafa;
+  --color-text-secondary: #71717a;
+  --color-text-secondary-dark: #a1a1aa;
+  --spacing-120: 30rem;
 }
 
 body,
 #root {
-  background-color: #ffffff;
-  color: #0f172a;
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -27,8 +38,13 @@ body,
 
 .dark body,
 .dark #root {
-  background-color: #0f172a;
-  color: #e2e8f0;
+  background-color: var(--color-surface-dark);
+  color: var(--color-text-primary-dark);
+}
+
+/* Mono font utility */
+.font-mono-brand {
+  font-family: 'JetBrains Mono', monospace;
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -40,28 +56,85 @@ body,
   scrollbar-width: none;
 }
 
+/* Shimmer skeleton animation */
+@keyframes shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    #e4e4e7 25%,
+    #f4f4f5 37%,
+    #e4e4e7 63%
+  );
+  background-size: 800px 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
+.dark .skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    #27272a 25%,
+    #3f3f46 37%,
+    #27272a 63%
+  );
+  background-size: 800px 100%;
+}
+
+/* Spring-based hover transition utility */
+.transition-spring {
+  transition-property: transform, opacity, box-shadow;
+  transition-duration: 0.4s;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Reduced motion: disable all custom animations */
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-shimmer {
+    animation: none;
+  }
+
+  .transition-spring {
+    transition-duration: 0.01ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 /* Quill Editor Dark Mode Override Styles */
 .dark .ql-toolbar {
-  background-color: #1f2937 !important;
-  border-color: #374151 !important;
+  background-color: #18181b !important;
+  border-color: #27272a !important;
 }
 .dark .ql-container {
-  background-color: #1f2937 !important;
-  border-color: #374151 !important;
-  color: #e5e7eb !important;
+  background-color: #18181b !important;
+  border-color: #27272a !important;
+  color: #e4e4e7 !important;
 }
 .dark .ql-stroke {
-  stroke: #e5e7eb !important;
+  stroke: #e4e4e7 !important;
 }
 .dark .ql-fill {
-  fill: #e5e7eb !important;
+  fill: #e4e4e7 !important;
 }
 .dark .ql-picker {
-  color: #e5e7eb !important;
+  color: #e4e4e7 !important;
 }
 .dark .ql-picker-options {
-  background-color: #1f2937 !important;
-  border-color: #374151 !important;
+  background-color: #18181b !important;
+  border-color: #27272a !important;
 }
 
 /* Custom typography styles to restore lists and headings within product descriptions (Quill compatible) */

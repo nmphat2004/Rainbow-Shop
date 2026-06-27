@@ -1,7 +1,7 @@
 const Skeletion = ({ className, ...props }) => {
 	return (
 		<div
-			className={`animate-pulse rounded-md bg-gray-200 dark:bg-gray-700 ${className || ''}`}
+			className={`skeleton-shimmer rounded-xl ${className || ''}`}
 			{...props}
 		/>
 	);

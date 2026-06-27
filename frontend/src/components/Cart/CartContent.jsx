@@ -43,19 +43,23 @@ const CartContent = ({ cart, userId, guestId }) => {
 			{cart.products.map((product, index) => (
 				<div
 					key={index}
-					className='flex items-start justify-between py-4 border-b border-gray-200 dark:border-gray-700'>
+					className='flex items-start justify-between py-4 border-b border-zinc-100 dark:border-zinc-800'>
 					<div className='flex items-start'>
-						<img
-							src={product.image}
-							alt={product.name}
-							className='w-20 h-24 mr-4 object-cover rounded'
-						/>
-						<div>
-							<h3 className='dark:text-white'>{product.name}</h3>
-							<p className='text-sm text-gray-500 dark:text-gray-400'>
-								size: {product.size} | color: {product.color}
-							</p>
-							<div className='flex items-center mt-2'>
+						<div className='relative w-20 h-24 mr-4 overflow-hidden rounded-lg bg-zinc-50 dark:bg-zinc-950 shrink-0 group'>
+							<img
+								src={product.image}
+								alt={product.name}
+								className='w-full h-full object-cover transition-transform duration-300 group-hover:scale-105'
+							/>
+						</div>
+						<div className='flex flex-col justify-between h-24'>
+							<div>
+								<h3 className='text-sm font-medium text-zinc-800 dark:text-zinc-100'>{product.name}</h3>
+								<p className='font-mono-brand text-[10px] uppercase text-zinc-400 dark:text-zinc-500 tracking-wider mt-1'>
+									S: {product.size} | C: {product.color}
+								</p>
+							</div>
+							<div className='flex items-center space-x-3'>
 								<button
 									onClick={() =>
 										handleAddToCart(
@@ -66,10 +70,10 @@ const CartContent = ({ cart, userId, guestId }) => {
 											product.color
 										)
 									}
-									className='border dark:border-gray-600 rounded px-2 py-1 text-xl font-medium dark:text-gray-300'>
+									className='w-7 h-7 flex items-center justify-center border border-zinc-200 dark:border-zinc-700 rounded-lg text-sm text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 active:scale-[0.95] transition-all cursor-pointer'>
 									-
 								</button>
-								<span className='mx-4 dark:text-gray-200'>{product.quantity}</span>
+								<span className='font-mono-brand text-sm text-zinc-700 dark:text-zinc-300'>{product.quantity}</span>
 								<button
 									onClick={() =>
 										handleAddToCart(
@@ -80,14 +84,16 @@ const CartContent = ({ cart, userId, guestId }) => {
 											product.color
 										)
 									}
-									className='border dark:border-gray-600 rounded px-2 py-1 text-xl font-medium dark:text-gray-300'>
+									className='w-7 h-7 flex items-center justify-center border border-zinc-200 dark:border-zinc-700 rounded-lg text-sm text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 active:scale-[0.95] transition-all cursor-pointer'>
 									+
 								</button>
 							</div>
 						</div>
 					</div>
-					<div className='flex flex-col items-end'>
-						<p className='font-medium dark:text-gray-200'>$ {product.price.toLocaleString()}</p>
+					<div className='flex flex-col items-end justify-between h-24'>
+						<p className='font-mono-brand text-sm font-semibold text-zinc-900 dark:text-zinc-100'>
+							${product.price.toLocaleString()}
+						</p>
 						<button
 							onClick={() =>
 								handleRemoveFromCart(
@@ -95,8 +101,9 @@ const CartContent = ({ cart, userId, guestId }) => {
 									product.size,
 									product.color
 								)
-							}>
-							<RiDeleteBin3Line className='h-6 w-6 mt-2 text-red-600' />
+							}
+							className='text-zinc-400 hover:text-rainbow-red dark:hover:text-rainbow-red transition-colors active:scale-[0.95] cursor-pointer'>
+							<RiDeleteBin3Line className='h-4.5 w-4.5' />
 						</button>
 					</div>
 				</div>

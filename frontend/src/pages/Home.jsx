@@ -47,33 +47,33 @@ const Home = () => {
 			<NewArrivals />
 
 			{/* Best Seller */}
-			<h2 className='text-3xl text-center font-bold mb-4 dark:text-white'>
-				Best Seller
-			</h2>
+			<section className='py-20 px-4 lg:px-6'>
+				<div className='container mx-auto'>
+					<h2 className='text-3xl md:text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 text-center mb-2'>
+						Best Seller
+					</h2>
+				</div>
+			</section>
 			{bestSellerProduct && (
 				<ProductDetails productId={bestSellerProduct._id} />
 			)}
 
-			<div className='container mx-auto space-y-4 py-10'>
-				<h2 className='text-3xl text-center font-bold dark:text-white'>
+			<section className='container mx-auto px-4 lg:px-6 py-20'>
+				<h2 className='text-3xl md:text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 mb-8'>
 					Top Wears for Women
 				</h2>
 				{loading ?
-					<div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 '>
+					<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-8'>
 						{Array.from({ length: 8 }).map((_, i) => (
-							<div
-								className='rounded-lg border border-gray-100 bg-white dark:bg-gray-800 dark:border-gray-700 p-4'
-								key={i}>
-								<Skeletion className='w-full h-96 mb-4' />
-								<div>
-									<Skeletion className='w-3/4 h-4 mb-2' />
-									<Skeletion className='w-1/4 h-4 mb-2' />
-								</div>
+							<div key={i}>
+								<Skeletion className='w-full h-96 mb-3' />
+								<Skeletion className='w-3/4 h-4 mb-2' />
+								<Skeletion className='w-1/4 h-4' />
 							</div>
 						))}
 					</div>
 					: <ProductGrid products={products} error={error} />}
-			</div>
+			</section>
 
 			<FeaturedCollection />
 			<FeaturesSection />

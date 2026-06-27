@@ -13,46 +13,46 @@ const SUGGESTIONS = [
 // Sub-component: Product Card Carousel
 const ProductCarousel = ({ products, onSelectProduct }) => {
 	return (
-		<div className="mt-2.5 w-full overflow-x-auto flex gap-3 pb-2.5 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600">
+		<div className="mt-3 w-full overflow-x-auto no-scrollbar flex gap-2.5 pb-2">
 			{products.map((prod) => {
 				const prodId = prod.id || prod._id;
 				const name = prod.name;
 				const price = prod.price;
 				const discountPrice = prod.discountPrice;
-				const image = prod.image || (prod.images && prod.images[0]?.url) || 'https://via.placeholder.com/150';
+				const image = prod.image || (prod.images && prod.images[0]?.url) || 'https://picsum.photos/seed/product-placeholder/150/150';
 				
 				return (
 					<div 
 						key={prodId} 
-						className="shrink-0 w-36 bg-white dark:bg-gray-800 border border-gray-150 dark:border-gray-700 rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between"
+						className="shrink-0 w-32 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl overflow-hidden transition-all duration-300 hover:scale-[1.02] flex flex-col justify-between"
 					>
-						<div className="relative group overflow-hidden h-28 bg-gray-55 dark:bg-gray-900 flex items-center justify-center">
+						<div className="overflow-hidden h-24 bg-zinc-50 dark:bg-zinc-900 flex items-center justify-center">
 							<img 
 								src={image} 
 								alt={name} 
-								className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500" 
+								className="h-full w-full object-cover transition-transform duration-500 hover:scale-110" 
 							/>
 						</div>
 						<div className="p-2 flex-1 flex flex-col justify-between">
 							<div>
-								<h4 className="text-xs font-bold text-gray-800 dark:text-gray-250 truncate mb-1" title={name}>
+								<h4 className="text-[11px] font-semibold text-zinc-800 dark:text-zinc-200 truncate mb-1" title={name}>
 									{name}
 								</h4>
 								<div className="flex flex-wrap items-center gap-1">
 									{discountPrice ? (
 										<>
-											<span className="text-xs font-extrabold text-red-500">${discountPrice}</span>
-											<span className="text-[10px] text-gray-405 dark:text-gray-500 line-through">${price}</span>
+											<span className="font-mono-brand text-[11px] font-bold text-rainbow-red">${discountPrice}</span>
+											<span className="font-mono-brand text-[10px] text-zinc-400 dark:text-zinc-500 line-through">${price}</span>
 										</>
 									) : (
-										<span className="text-xs font-extrabold text-blue-600 dark:text-blue-400">${price}</span>
+										<span className="font-mono-brand text-[11px] font-bold text-zinc-700 dark:text-zinc-300">${price}</span>
 									)}
 								</div>
 							</div>
 							<Link 
 								to={`/product/${prodId}`}
 								onClick={onSelectProduct}
-								className="mt-2 block text-center text-[10px] font-semibold bg-gray-100 dark:bg-gray-700 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-600 text-gray-650 dark:text-gray-300 py-1.5 rounded-lg transition-colors cursor-pointer"
+								className="mt-2 block text-center text-[10px] font-semibold bg-zinc-100 dark:bg-zinc-700 hover:bg-rainbow-red hover:text-white text-zinc-600 dark:text-zinc-300 py-1.5 rounded-lg transition-colors cursor-pointer"
 							>
 								View Details
 							</Link>
@@ -68,46 +68,46 @@ const ProductCarousel = ({ products, onSelectProduct }) => {
 const OrderCard = ({ order, onSelectOrder }) => {
 	const dateStr = new Date(order.createdAt).toLocaleDateString();
 	const statusColors = {
-		'Processing': 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 border border-amber-205 dark:border-amber-900/40',
-		'Shipped': 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-200 dark:border-blue-900/40',
-		'Delivered': 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 border border-green-200 dark:border-green-900/40',
-		'Cancelled': 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-300 border border-red-200 dark:border-red-900/30',
+		'Processing': 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-300 border border-amber-200 dark:border-amber-800/40',
+		'Shipped': 'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300 border border-blue-200 dark:border-blue-800/40',
+		'Delivered': 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/40',
+		'Cancelled': 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-300 border border-red-200 dark:border-red-800/40',
 	};
-	const badgeClass = statusColors[order.status] || 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300';
+	const badgeClass = statusColors[order.status] || 'bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300';
 	
 	return (
-		<div className="mt-3 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-3 shadow-sm flex flex-col gap-2 animate-in fade-in slide-in-from-bottom-2">
-			<div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-700 pb-2">
+		<div className="mt-3 w-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-3 flex flex-col gap-2">
+			<div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-700 pb-2">
 				<div>
-					<span className="text-[10px] text-gray-400 dark:text-gray-550 font-mono">#{order._id.toString().slice(-6).toUpperCase()}</span>
-					<h4 className="text-xs font-semibold text-gray-500 dark:text-gray-400">{dateStr}</h4>
+					<span className="font-mono-brand text-[10px] text-zinc-400 dark:text-zinc-500">#{order._id.toString().slice(-6).toUpperCase()}</span>
+					<h4 className="text-xs font-medium text-zinc-500 dark:text-zinc-400">{dateStr}</h4>
 				</div>
-				<span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${badgeClass}`}>
+				<span className={`text-[10px] font-bold px-2 py-0.5 rounded-lg ${badgeClass}`}>
 					{order.status}
 				</span>
 			</div>
 			<div className="space-y-1 my-1">
 				{order.orderItems && order.orderItems.slice(0, 2).map((item, index) => (
 					<div key={index} className="flex justify-between items-center text-xs">
-						<span className="text-gray-600 dark:text-gray-300 truncate max-w-[70%]">
-							{item.name} <span className="text-gray-450 font-normal">x{item.quantity}</span>
+						<span className="text-zinc-600 dark:text-zinc-300 truncate max-w-[70%]">
+							{item.name} <span className="text-zinc-400 font-mono-brand">x{item.quantity}</span>
 						</span>
-						<span className="font-semibold text-gray-700 dark:text-gray-200">${item.price * item.quantity}</span>
+						<span className="font-mono-brand font-semibold text-zinc-700 dark:text-zinc-200">${item.price * item.quantity}</span>
 					</div>
 				))}
 				{order.orderItems && order.orderItems.length > 2 && (
-					<p className="text-[10px] text-gray-400 dark:text-gray-500 italic">+ {order.orderItems.length - 2} more item(s)</p>
+					<p className="text-[10px] text-zinc-400 dark:text-zinc-500 italic">+ {order.orderItems.length - 2} more item(s)</p>
 				)}
 			</div>
-			<div className="flex items-center justify-between pt-2 border-t border-gray-100 dark:border-gray-700">
+			<div className="flex items-center justify-between pt-2 border-t border-zinc-100 dark:border-zinc-700">
 				<div>
-					<p className="text-[10px] text-gray-400 dark:text-gray-200">Total Amount</p>
-					<p className="text-sm font-extrabold text-gray-800 dark:text-white">${order.totalPrice}</p>
+					<p className="text-[10px] text-zinc-400 dark:text-zinc-500">Total</p>
+					<p className="font-mono-brand text-sm font-bold text-zinc-800 dark:text-white">${order.totalPrice}</p>
 				</div>
 				<Link 
 					to={`/order/${order._id}`}
 					onClick={onSelectOrder}
-					className="text-xs bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
+					className="text-xs bg-rainbow-red hover:bg-red-600 text-white font-semibold px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
 				>
 					Track Order
 				</Link>
@@ -119,30 +119,30 @@ const OrderCard = ({ order, onSelectOrder }) => {
 // Sub-component: User Orders List Card
 const OrdersListCard = ({ orders, onSelectOrder }) => {
 	return (
-		<div className="mt-3 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-3 shadow-sm space-y-2 animate-in fade-in slide-in-from-bottom-2">
-			<h4 className="text-xs font-bold text-gray-500 dark:text-gray-400 border-b border-gray-100 dark:border-gray-700 pb-1.5">
+		<div className="mt-3 w-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-3 space-y-2">
+			<h4 className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 border-b border-zinc-100 dark:border-zinc-700 pb-1.5">
 				Your Recent Orders
 			</h4>
-			<div className="divide-y divide-gray-100 dark:divide-gray-700">
+			<div className="divide-y divide-zinc-100 dark:divide-zinc-700">
 				{orders.map((order) => {
 					const dateStr = new Date(order.createdAt).toLocaleDateString();
 					return (
 						<div key={order._id || order.orderId} className="py-2 flex items-center justify-between first:pt-0 last:pb-0">
 							<div>
-								<span className="text-xs font-semibold text-gray-800 dark:text-gray-200 font-mono">
+								<span className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 font-mono-brand">
 									#{ (order._id || order.orderId).slice(-6).toUpperCase() }
 								</span>
-								<p className="text-[10px] text-gray-400 dark:text-gray-550">{dateStr}</p>
+								<p className="text-[10px] text-zinc-400 dark:text-zinc-500">{dateStr}</p>
 							</div>
 							<div className="text-right flex items-center gap-3">
 								<div>
-									<p className="text-xs font-extrabold text-gray-800 dark:text-white">${order.totalPrice}</p>
-									<span className="text-[9px] font-bold text-blue-500">{order.status}</span>
+									<p className="font-mono-brand text-xs font-bold text-zinc-800 dark:text-white">${order.totalPrice}</p>
+									<span className="text-[9px] font-semibold text-rainbow-red">{order.status}</span>
 								</div>
 								<Link 
 									to={`/order/${order._id || order.orderId}`}
 									onClick={onSelectOrder}
-									className="text-[10px] bg-gray-100 dark:bg-gray-700 hover:bg-blue-600 hover:text-white text-gray-600 dark:text-gray-300 px-2 py-1 rounded transition-colors cursor-pointer"
+									className="text-[10px] bg-zinc-100 dark:bg-zinc-700 hover:bg-rainbow-red hover:text-white text-zinc-600 dark:text-zinc-300 px-2 py-1 rounded-lg transition-colors cursor-pointer"
 								>
 									View
 								</Link>
@@ -160,7 +160,7 @@ const Chatbox = () => {
 	const [messages, setMessages] = useState([
 		{
 			id: 'welcome',
-			text: 'Hello! Welcome to Rainbow Shop. How can I help you today? 🌈',
+			text: 'Welcome to Rainbow Shop. How can I help you today?',
 			sender: 'bot',
 		},
 	]);
@@ -271,7 +271,7 @@ const Chatbox = () => {
 			console.error('Chat error:', error);
 			const errorMessage = {
 				id: (Date.now() + 1).toString(),
-				text: 'Sorry, I am having trouble connecting to my service right now. Please try again later.',
+				text: 'Sorry, I am having trouble connecting right now. Please try again later.',
 				sender: 'bot',
 				isError: true,
 			};
@@ -292,41 +292,38 @@ const Chatbox = () => {
 			{/* Floating Chat Trigger Button */}
 			<button
 				onClick={() => setIsOpen(!isOpen)}
-				className={`fixed bottom-6 right-6 z-50 p-4 rounded-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/30 hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center cursor-pointer`}
+				className='fixed bottom-6 right-6 z-50 p-3.5 rounded-xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 shadow-lg shadow-zinc-900/20 dark:shadow-zinc-100/10 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer ring-2 ring-rainbow-red/30'
 				aria-label='Toggle Chat Support'
 			>
-				{isOpen ? <FiX className='w-6 h-6' /> : <FiMessageCircle className='w-6 h-6' />}
+				{isOpen ? <FiX className='w-5 h-5' /> : <FiMessageCircle className='w-5 h-5' />}
 			</button>
 
 			{/* Chatbox Window */}
 			{isOpen && (
-				<div className='fixed bottom-24 right-6 z-50 w-80 sm:w-96 max-w-[calc(100vw-2rem)] h-[500px] max-h-[70vh] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 animate-in slide-in-from-bottom-5 fade-in'>
+				<div className='fixed bottom-24 right-6 z-50 w-80 sm:w-96 max-w-[calc(100vw-2rem)] h-[500px] max-h-[70vh] bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl border border-zinc-200/80 dark:border-white/10 rounded-2xl shadow-2xl shadow-zinc-900/10 dark:shadow-black/30 flex flex-col overflow-hidden'>
 					{/* Header */}
-					<div className='p-4 bg-linear-to-r from-blue-600 to-indigo-600 text-white flex items-center justify-between shadow-md'>
+					<div className='p-4 bg-zinc-900 dark:bg-zinc-950 text-white flex items-center justify-between'>
 						<div className='flex items-center gap-3'>
-							<div className='relative'>
-								<div className='w-10 h-10 rounded-full bg-white/20 flex items-center justify-center font-bold text-lg text-white'>
-									🌈
-								</div>
-								<span className='absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white dark:border-gray-800 rounded-full'></span>
+							<div className='w-9 h-9 rounded-xl bg-rainbow-red/20 flex items-center justify-center'>
+								<span className='font-mono-brand text-xs font-bold text-rainbow-red'>R</span>
 							</div>
 							<div>
-								<h3 className='font-bold text-sm leading-tight'>Rainbow Assistant</h3>
-								<p className='text-xs text-white/80 flex items-center gap-1'>
-									Online • Powered by Gemini
+								<h3 className='font-semibold text-sm leading-tight'>Rainbow Assistant</h3>
+								<p className='text-[11px] text-zinc-400'>
+									Powered by Gemini
 								</p>
 							</div>
 						</div>
 						<button
 							onClick={() => setIsOpen(false)}
-							className='p-1 rounded-full hover:bg-white/20 transition-colors cursor-pointer text-white'
+							className='p-1.5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer text-zinc-400 hover:text-white'
 						>
-							<FiX className='w-5 h-5' />
+							<FiX className='w-4 h-4' />
 						</button>
 					</div>
 
 					{/* Message Log */}
-					<div className='flex-1 p-4 overflow-y-auto space-y-4 dark:bg-gray-900/40'>
+					<div className='flex-1 p-4 overflow-y-auto space-y-3 bg-zinc-50/50 dark:bg-zinc-950/50'>
 						{messages.map((msg) => (
 							<div
 								key={msg.id}
@@ -335,10 +332,10 @@ const Chatbox = () => {
 								<div
 									className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
 										msg.sender === 'user'
-											? 'bg-blue-600 text-white rounded-br-none shadow-md shadow-blue-500/10'
+											? 'bg-rainbow-red text-white rounded-br-md'
 											: msg.isError
-												? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-300 border border-red-100 dark:border-red-900/30'
-												: 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-bl-none shadow-sm'
+												? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-300 border border-red-200 dark:border-red-800/30'
+												: 'bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 rounded-bl-md border border-zinc-200/60 dark:border-zinc-700/60'
 									}`}
 								>
 									{msg.imageUrl && (
@@ -346,7 +343,7 @@ const Chatbox = () => {
 											<img 
 												src={msg.imageUrl} 
 												alt="Uploaded query" 
-												className="max-h-40 object-cover w-full rounded" 
+												className="max-h-36 object-cover w-full rounded-lg" 
 											/>
 										</div>
 									)}
@@ -382,15 +379,15 @@ const Chatbox = () => {
 						{/* Typing/Loading Indicator */}
 						{loading && (
 							<div className='flex justify-start'>
-								<div className='bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 rounded-2xl rounded-bl-none px-4 py-3 text-sm flex items-center gap-1 shadow-sm'>
-									<span className='w-1.5 h-1.5 bg-gray-500 dark:bg-gray-400 rounded-full animate-bounce'></span>
+								<div className='bg-white dark:bg-zinc-800 text-zinc-400 rounded-2xl rounded-bl-md px-4 py-3 text-sm flex items-center gap-1.5 border border-zinc-200/60 dark:border-zinc-700/60'>
+									<span className='w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full animate-bounce'></span>
 									<span
-										className='w-1.5 h-1.5 bg-gray-500 dark:bg-gray-400 rounded-full animate-bounce'
-										style={{ animationDelay: '0.2s' }}
+										className='w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full animate-bounce'
+										style={{ animationDelay: '0.15s' }}
 									></span>
 									<span
-										className='w-1.5 h-1.5 bg-gray-500 dark:bg-gray-400 rounded-full animate-bounce'
-										style={{ animationDelay: '0.4s' }}
+										className='w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full animate-bounce'
+										style={{ animationDelay: '0.3s' }}
 									></span>
 								</div>
 							</div>
@@ -400,12 +397,12 @@ const Chatbox = () => {
 
 					{/* Suggestions Chips */}
 					{messages.length === 1 && !loading && (
-						<div className='px-4 pb-2 pt-1 flex flex-wrap gap-1.5 bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700/50'>
+						<div className='px-3 pb-2 pt-1.5 flex flex-wrap gap-1.5 bg-white/80 dark:bg-zinc-900/80 border-t border-zinc-200/60 dark:border-zinc-800/60'>
 							{SUGGESTIONS.map((sug, i) => (
 								<button
 									key={i}
 									onClick={() => handleSend(sug)}
-									className='text-xs bg-gray-100 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 border border-gray-200 dark:border-gray-600 px-2.5 py-1.5 rounded-full transition-all cursor-pointer'
+									className='text-[11px] bg-zinc-100 dark:bg-zinc-800 hover:bg-rainbow-red/10 dark:hover:bg-rainbow-red/10 text-zinc-600 dark:text-zinc-400 hover:text-rainbow-red dark:hover:text-rainbow-red border border-zinc-200 dark:border-zinc-700 px-2.5 py-1.5 rounded-lg transition-all cursor-pointer'
 								>
 									{sug}
 								</button>
@@ -415,22 +412,22 @@ const Chatbox = () => {
 
 					{/* Image Preview Container */}
 					{(selectedImageUrl || uploadingImage) && (
-						<div className="px-4 py-2 bg-gray-50 dark:bg-gray-800/40 border-t border-gray-100 dark:border-gray-700/50 flex items-center gap-3 relative animate-in fade-in slide-in-from-bottom-2">
+						<div className="px-3 py-2 bg-zinc-50 dark:bg-zinc-900/60 border-t border-zinc-200/60 dark:border-zinc-800/60 flex items-center gap-3">
 							{uploadingImage ? (
-								<div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
-									<div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+								<div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
+									<div className="w-4 h-4 border-2 border-rainbow-red border-t-transparent rounded-full animate-spin"></div>
 									<span>Uploading image...</span>
 								</div>
 							) : (
-								<div className="relative group">
+								<div className="relative">
 									<img 
 										src={selectedImageUrl} 
 										alt="Upload preview" 
-										className="w-14 h-14 object-cover rounded-lg border border-gray-250 dark:border-gray-600" 
+										className="w-12 h-12 object-cover rounded-lg border border-zinc-200 dark:border-zinc-700" 
 									/>
 									<button 
 										onClick={() => setSelectedImageUrl('')}
-										className="absolute -top-1.5 -right-1.5 bg-red-500 text-white rounded-full p-0.5 shadow hover:bg-red-650 transition-colors cursor-pointer"
+										className="absolute -top-1.5 -right-1.5 bg-zinc-800 text-white rounded-full p-0.5 hover:bg-red-600 transition-colors cursor-pointer"
 										title="Remove image"
 									>
 										<FiX className="w-3 h-3" />
@@ -441,7 +438,7 @@ const Chatbox = () => {
 					)}
 
 					{/* Input Footer */}
-					<div className='p-3 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex gap-2 items-center'>
+					<div className='p-3 border-t border-zinc-200/60 dark:border-zinc-800/60 bg-white dark:bg-zinc-900 flex gap-2 items-center'>
 						<input 
 							type="file" 
 							ref={fileInputRef} 
@@ -453,10 +450,10 @@ const Chatbox = () => {
 							onClick={handleImageClick}
 							disabled={loading || uploadingImage}
 							type="button"
-							className="p-2.5 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 border border-gray-200 dark:border-gray-600 cursor-pointer active:scale-95 transition-all"
+							className="p-2.5 rounded-xl bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 border border-zinc-200 dark:border-zinc-700 cursor-pointer active:scale-95 transition-all"
 							title="Upload product image"
 						>
-							<FiImage className='w-4.5 h-4.5' />
+							<FiImage className='w-4 h-4' />
 						</button>
 						<input
 							type='text'
@@ -464,7 +461,7 @@ const Chatbox = () => {
 							value={inputText}
 							onChange={(e) => setInputText(e.target.value)}
 							onKeyDown={handleKeyPress}
-							className='flex-1 bg-gray-55 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-blue-500 dark:focus:border-blue-500 dark:text-white transition-colors'
+							className='flex-1 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-500 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 transition-colors'
 							disabled={loading || uploadingImage}
 						/>
 						<button
@@ -472,11 +469,11 @@ const Chatbox = () => {
 							disabled={loading || uploadingImage || (!inputText.trim() && !selectedImageUrl)}
 							className={`p-2.5 rounded-xl flex items-center justify-center transition-all ${
 								loading || uploadingImage || (!inputText.trim() && !selectedImageUrl)
-									? 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-555 cursor-not-allowed'
-									: 'bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/20 cursor-pointer active:scale-95'
+									? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-300 dark:text-zinc-600 cursor-not-allowed'
+									: 'bg-rainbow-red hover:bg-red-600 text-white shadow-sm cursor-pointer active:scale-95'
 							}`}
 						>
-							<FiSend className='w-4.5 h-4.5' />
+							<FiSend className='w-4 h-4' />
 						</button>
 					</div>
 				</div>
